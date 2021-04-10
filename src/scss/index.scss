@@ -1,3 +1,25 @@
+@font-face {
+    font-family: 'luckiest_guyregular';
+    src: url('~/static/fonts/luckiestguy-regular-webfont.woff2') format('woff2'),
+         url('~/static/fonts/luckiestguy-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+$breakpoints: (
+    "s": 640px,
+    "m": 768px,
+    "l": "1024px",
+    "xl": "1280px"
+);
+
+@mixin breakpoint($breakpoint-size) {
+    $min-width: map-get($breakpoints, $breakpoint-size);
+    @media (min-width: $min-width) {
+        @content
+    }
+}
+
 *
 {
     margin: 0;
@@ -5,9 +27,21 @@
 }
 
 html,
-body
+body,
+main
 {
-    overflow: hidden;
+    width: 100%;
+	height: 100%;
+    font-size: 14px;
+    // overflow: hidden;
+}
+
+.hero {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .webgl
@@ -16,4 +50,149 @@ body
     top: 0;
     left: 0;
     outline: none;
+}
+
+.hero {
+    background-color: lighten(#c1caca, 15%);
+}
+
+.hero__title {
+    display: block;
+    font-family: 'luckiest_guyregular', 'Helevetica', 'sans-serif', 'serif';
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    text-align: center;
+
+    @include breakpoint('l') {
+        font-size: 4.5rem;
+    }
+}
+
+.hero br {
+    display: block;
+    content: "";
+    margin: 0;
+}
+
+.hero .hero__title-base {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    transition: opacity 0.7s linear, visibility 0.7s linear, transform 0.5s linear;
+}
+
+.hero.is-visible .hero__title-base {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px);
+}
+
+.hero__title-only {
+    font-size: 3.5rem;
+    margin: 0 10px;
+    transition: color 0.75s cubic-bezier(0.47, 0, 0.745, 0.715);
+    transition-delay: 0.3s;
+    will-change: color;
+    
+    @include breakpoint('l') {
+        font-size: 7.5rem;
+        margin: 0 25px;
+    }
+}
+
+@keyframes wiggle {
+    0% {
+        transform: rotate(-10deg);
+    }
+
+    25% {
+        transform: rotate(10deg);
+    }
+
+    50% {
+        transform: rotate(-7deg);
+    }
+
+    75% {
+        transform: rotate(3deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+.hero.is-visible .hero__title-only {
+    color: teal;
+    animation: wiggle 0.5s linear 0.5s;
+}
+
+.hero__subtitle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(15px, -20px);
+    transition: opacity 0.4s linear, visibility 0.4s linear, transform 0.4s linear;
+    transition-delay: 0.85s;
+    
+    @include breakpoint('l') {
+        transform: translate(15px, -50px);
+    }
+}
+
+.hero.is-visible .hero__subtitle {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, -20px);
+
+    @include breakpoint('l') {
+        transform: translate(0, -50px);
+    }
+}
+
+.hero__title-is {
+    font-size: 1.25rem;
+
+    @include breakpoint('l') {
+        font-size: 3rem;
+    }
+}
+
+.hero__title-up {
+    margin-left: 15px;
+    font-size: 4.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(50px);
+    transition: opacity 0.6s linear, visibility 0.6s linear, transform 0.8s ease-in-out;
+    transition-delay: 1.1s;
+    color: #cc5500;
+    
+    @include breakpoint('l') {
+        font-size: 8.5rem;
+        transform: translateY(110px);
+    }
+}
+
+.hero.is-visible .hero__title-up {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+span[class^="hero__title-"] {
+    will-change: opacity;
+}
+
+
+.section {
+    height: 500px;
 }

@@ -1,4 +1,4 @@
-# 7yp3
+# Uppersquad
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
