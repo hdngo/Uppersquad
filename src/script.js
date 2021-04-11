@@ -18,10 +18,11 @@ up.addEventListener('animationend', () => {
     const main = document.querySelector('main')
 
     setTimeout(() => {
-        main.scrollTo({
+        /* main.scrollTo({
             top: hero.getBoundingClientRect().height,
             left: 0, behavior: 'smooth'
-        })  
+        }) */
+        // note: scrollTo has requirements in regards to the height/overflow of containers/parents
     }, 1234)
 })
 
@@ -93,6 +94,19 @@ releaseTheBalloons()
 
 window.addEventListener('resize', () => {
     releaseTheBalloons()
-
-    // window.requestAnimationFrame(releaseTheBalloons)
 })
+
+// menu
+const menuCTA = document.querySelector('.menu-cta')
+
+import { Menu } from './js/menu.js'
+
+const myMenu = new Menu(menuCTA)
+
+// get the weather
+import { Weather } from './js/weather.js'
+const WeatherGenerator = new Weather()
+const weatherReport = WeatherGenerator.generateReport()
+
+myMenu.appendContent(weatherReport)
+myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getGeo)
