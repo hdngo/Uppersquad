@@ -1,7 +1,19 @@
+@use "sass:math";
+@use "sass:color";
+@use "sass:list";
+
 @font-face {
     font-family: 'luckiest_guyregular';
     src: url('~/static/fonts/luckiestguy-regular-webfont.woff2') format('woff2'),
          url('~/static/fonts/luckiestguy-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'boogalooregular';
+    src: url('~/static/fonts/boogaloo-regular-webfont.woff2') format('woff2'),
+         url('~/static/fonts/boogaloo-regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -20,10 +32,13 @@ $breakpoints: (
     }
 }
 
+$slate: lighten(#c1caca, 20%);
+
 *
 {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html,
@@ -33,15 +48,57 @@ main
     width: 100%;
 	height: 100%;
     font-size: 14px;
-    // overflow: hidden;
+    font-family: 'boogalooregular', 'sans-serif', 'serif';
+}
+
+body {
+    overflow: auto;
+}
+
+main {
+    position: relative;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: $slate;
+    position: relative;
+}
+
+p {
+    font-size: 1.8rem;
+
+    @include breakpoint('m') {
+        font-size: 2.5rem;
+    }
+
+    @include breakpoint('l') {
+        font-size: 3.3rem;
+    }
+}
+
+:root {
+    --hero-subtitle-tY: -20px;
+    --hero-title-up-tY: 50px; 
+}
+
+@include breakpoint('l') {
+    :root {
+        --hero-subtitle-tY: -50px;
+        --hero-title-up-TY: 110px;
+    }
 }
 
 .hero {
+    // position: absolute;
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10;
+    background-color: $slate;
+    // transition: 1.3s transform cubic-bezier(0.39, 0.575, 0.565, 1) 2.1s;
 }
 
 .webgl
@@ -52,20 +109,18 @@ main
     outline: none;
 }
 
-.hero {
-    background-color: lighten(#c1caca, 15%);
-}
-
 .hero__title {
     display: block;
     font-family: 'luckiest_guyregular', 'Helevetica', 'sans-serif', 'serif';
-    font-size: 1.5rem;
+    font-size: 2.75rem;
     font-weight: 700;
     letter-spacing: 0.2rem;
     text-align: center;
+    margin-top: 20px; // offset for subtitle translateY for vertical centering
 
     @include breakpoint('l') {
         font-size: 4.5rem;
+        margin-top: 50px;
     }
 }
 
@@ -81,21 +136,31 @@ main
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-15px);
-    transition: opacity 0.7s linear, visibility 0.7s linear, transform 0.5s linear;
 }
 
 .hero.is-visible .hero__title-base {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0px);
+    animation: 0.7s revealTitleBase linear 0.5s forwards;
+}
+
+@keyframes revealTitleBase {
+    0% {
+        transform: translateY(-15px);
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 .hero__title-only {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     margin: 0 10px;
     transition: color 0.75s cubic-bezier(0.47, 0, 0.745, 0.715);
-    transition-delay: 0.3s;
+    transition-delay: 0.8s;
     will-change: color;
     
     @include breakpoint('l') {
@@ -128,7 +193,7 @@ main
 
 .hero.is-visible .hero__title-only {
     color: teal;
-    animation: wiggle 0.5s linear 0.5s;
+    animation: wiggle 0.5s linear 1.25s;
 }
 
 .hero__subtitle {
@@ -139,27 +204,33 @@ main
     position: relative;
     opacity: 0;
     visibility: hidden;
-    transform: translate(15px, -20px);
-    transition: opacity 0.4s linear, visibility 0.4s linear, transform 0.4s linear;
-    transition-delay: 0.85s;
+    transform: translate3d(15px, var(--hero-subtitle-tY), 0);
     
     @include breakpoint('l') {
-        transform: translate(15px, -50px);
+        transform: translate3d(15px, var(--hero-subtitle-tY), 0);
+    }
+}
+
+@keyframes reveal-subtitle {
+    0% {
+        opacity: 0;
+        visibility: visible;
+        transform: translate3d(15px, var(--hero-subtitle-tY), 0);
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translate3d(0, var(--hero-subtitle-tY), 0);
     }
 }
 
 .hero.is-visible .hero__subtitle {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(0, -20px);
-
-    @include breakpoint('l') {
-        transform: translate(0, -50px);
-    }
+    animation: 0.4s reveal-subtitle 1.35s linear forwards;
 }
 
 .hero__title-is {
-    font-size: 1.25rem;
+    font-size: 2.25rem;
 
     @include breakpoint('l') {
         font-size: 3rem;
@@ -171,21 +242,30 @@ main
     font-size: 4.5rem;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(50px);
-    transition: opacity 0.6s linear, visibility 0.6s linear, transform 0.8s ease-in-out;
-    transition-delay: 1.1s;
+    transform: translate3d(0, var(--hero-title-up-tY), 0);
     color: #cc5500;
     
     @include breakpoint('l') {
         font-size: 8.5rem;
-        transform: translateY(110px);
+        transform: translate3d(0, var(--hero-title-up-tY), 0);
     }
 }
 
 .hero.is-visible .hero__title-up {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    animation: 0.7s moveOnUp 1.6s linear forwards;
+}
+@keyframes moveOnUp {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate3d(0, var(--hero-title-up-tY), 0)
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translate3d(0, 0, 0);
+    }
 }
 
 span[class^="hero__title-"] {
@@ -195,4 +275,299 @@ span[class^="hero__title-"] {
 
 .section {
     height: 500px;
+    width: 100%;
+    padding: 20px;
+    transition: background-color 1.5s ease-in-out;
+    position: relative;
+    // note: overflow visible only works when it's set on both x and y, otw sets to auto
+
+    * {
+        position: relative;
+        // note: need position relative b/c z-index issues
+        z-index: 1;
+    }
+}
+
+.section.is-visible {
+    // background-color: $slate;
+
+    .section__title {
+        opacity: 1;
+        transform: translateX(30px);
+
+        &::hover {
+            // transform: translateX(30px) scale(1.1);
+        }
+    }
+
+    &.section-reverse .section__title {
+        transform: translateX(-30px);
+    }
+}
+
+.section__title {
+    display: block;
+    font-size: 2.3rem;
+    opacity: 0;
+    z-index: 2;
+    transform: translateX(-5px);
+    transition: 0.6s opacity ease-in-out 0.15s, 0.4s transform linear 0.35s, 0.35s scale cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.45s;
+
+    @include breakpoint('l') {
+        font-size: 4.75rem;
+    }
+
+   /*  &::hover {
+        transform: scale(1.1);
+    } */
+}
+
+.section__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &::before, &::after {
+        display: block;
+        position: absolute;
+        content: '';
+        height: 7%;
+        min-width: 0;
+        width: auto;
+        background-color: teal;
+        opacity: 0.25;
+        transition: min-width 0.7s linear 0.2s;
+    }
+
+    &::before {
+        top: 7%;
+        left: 0;
+    }
+
+    &::after {
+        top: 20%;
+        left: 0;
+    }
+}
+
+.section-intro {
+
+}
+
+.section-costa-rica.is-visible .section__background {
+    $colors: red, blue;
+    &::before {
+        background-color: red;
+    }
+
+    &::after {
+        background-color: blue;
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-switzerland.is-visible .section__background {
+    $colors: red, $slate;
+
+    &::before {
+        background-color: white;
+        border-top: 10px inset red;
+        border-bottom: 10px inset red;
+    }
+
+    &::after {
+        background-color: white;
+        border-top: 10px inset red;
+        border-bottom: 10px inset red;
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-canada.is-visible .section__background {
+    $colors: red, $slate;
+    
+    &::before {
+        background-color: red;
+    }
+
+    &::after {
+        background-color: red;
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-vietnam.is-visible .section__background {
+    $colors: red, yellow;
+
+    &::before {
+        background-color: yellow;
+    }
+
+    &::after {
+        background-color: red
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-new-zealand.is-visible .section__background {
+    $colors: blue, red;
+
+    &::before {
+        background-color: blue
+    }
+
+    &::after {
+        background-color: red;
+    }
+
+    @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+            $index: random(list.length($colors));
+            color: darken(list.nth($colors, $index), 7.5%);
+            mix-blend-mode: hue;
+        }
+    }
+}
+
+.section.is-visible {
+    .section__background {
+        &::before, &::after {
+            min-width: 100%;
+            max-width: 100%;
+        }
+
+        .balloon {
+            text-shadow: 2px 2px 2px black;
+        }
+    }
+}
+
+@mixin balloonFloat($degree) {
+    @keyframes float-#{$degree}-degrees {
+        0% {
+            transform: translateY(0px) rotate($degree + deg);
+        }
+    
+        25% {
+            transform: translateY(-2px) rotate($degree + deg);
+        }
+    
+        50% {
+            transform: translateY(0px) rotate($degree + deg);
+        }
+    
+        75%  {
+            transform: translateY(2px) rotate($degree + deg);
+        }
+    
+        100% {
+            transform: translateY(0) rotate($degree + deg);
+        }
+    }
+}
+
+.balloon {
+    color: darken($slate, 10%);
+    position: absolute;
+    opacity: 0.1;
+    letter-spacing: 0.2rem;
+    font-size: 2.5rem;
+    z-index: 1;
+    transition: 0.5s color ease-in-out;
+
+    @include breakpoint('l') {
+        font-size: 4.75rem;
+    }
+
+    @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+            $randomDeg: math.floor(math.random() * 270);
+            // was too hard to read words upside down lols
+            @include balloonFloat($randomDeg);
+            $animation-name: float-#{$randomDeg}-degrees;
+            animation: float-#{$randomDeg}-degrees 2s linear infinite;
+            // note: choppy animation was caused by having an ease timing functinon
+        }
+    }
+
+    &:hover {
+        cursor: auto;
+    }
+}
+
+.section-intro {
+    height: 100%;
+    width: 100%;
+}
+
+.section-reverse {
+    .section__content {
+        align-items: flex-end;
+    }
+
+    .section__title {
+        // transform: translateX(5px);
+    }
+
+    .section__background {
+        left: auto;
+        right: 0;
+        &::before {
+            left: auto;
+            right: 0;
+        }
+    
+        &::after {
+            left: auto;
+            right: 0;
+        }
+    }
+}
+
+.section__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
 }
