@@ -1,0 +1,54 @@
+{
+    "countries": [
+        {
+            "name": "Costa Rica",
+            "words": [
+                "Pura Vida",
+                "Tirimbina",
+                "Bullet Ants",
+                "Howler Monkies",
+                "Rafting"
+            ]
+        },
+        {
+            "name": "Switzerland",
+            "words": [
+                "Canyoning",
+                "Chocolate",
+                "Interlaken",
+                "Goose",
+                "Poor Wallet"
+            ]
+        },
+        {
+            "name": "Canada",
+            "words": [
+                "Jeep",
+                "Snowshoeing",
+                "Frozen...",
+                "Avalanches",
+                "Poutine"
+            ]
+        },
+        {
+            "name": "Vietnam",
+            "words": [
+                "Family",
+                "Hue",
+                "Da Nang",
+                "Mopeds EVERYWHERE",
+                "Sweat"
+            ]
+        },
+        {
+            "name": "New Zealand",
+            "words": [
+                "Queenstown",
+                "Juicy Van",
+                "Oyster Adventure",
+                "Lamburgers",
+                "Alpacas"
+            ]
+        }
+    ]
+}

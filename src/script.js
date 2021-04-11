@@ -1,112 +1,84 @@
 import './scss/index.scss'
+
+const Countries =  require('../data/countries.json').countries
+import { Header } from './js/header.js'
+import { Menu } from './js/menu.js'
+import { Weather } from './js/weather.js'
+import { Hero } from './js/hero.js'
+import { Section } from './js/section.js'
+
 import * as dat from 'dat.gui'
 
-console.log("-QuQ-")
-console.log(dat)
+// const hero = document.querySelector('.hero')
+const main = document.querySelector('main')
 
-let hero = document.querySelector('.hero')
-window.addEventListener('load', (event) => {
-    // console.log('DOM fully loaded and parsed');
-    setTimeout(() => {
-        hero.classList.add('is-visible')
-    }, 700)
-})
+let sectionCount = 0
 
-let up = hero.querySelector('.hero__title-up')
-up.addEventListener('animationend', () => {
-    console.log('done, scroll now')
-    const main = document.querySelector('main')
-
-    setTimeout(() => {
-        /* main.scrollTo({
-            top: hero.getBoundingClientRect().height,
-            left: 0, behavior: 'smooth'
-        }) */
-        // note: scrollTo has requirements in regards to the height/overflow of containers/parents
-    }, 1234)
-})
-
-// note: transitionEnd event is called for each property, so for something like transform: prop1, prop2, prop3, it's called 3 times
-
-const createSectionObserver = (targetEl, threshold) => {
-    let observer
-
-    let options = {
-        root: null,
-        rootMargin: "0px",
-        threshold: threshold || 0.01
-    }
-
-    let target = targetEl
-
-    observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                target.classList.add('is-visible')
-
-                if (entry.intersectionRatio === 0.5) {
-                    console.log('visible')
-                }
-            }
-
-            if (!entry.isIntersecting) {
-                target.classList.remove('is-visible')
-            }
-        })
-    }, options)
-    observer.observe(target)
+// header
+const addHeader = () => {
+    const header = new Header()
 }
+addHeader()
 
-const clamp = (num, min, max) => {
-    return Math.min(Math.max(min, num), max)
+// hero
+const addHero = () => {
+    const hero = new Hero()
+
+    hero.el.classList.add('is-visible')
 }
-
-const sections = document.querySelectorAll('.section')
-const releaseTheBalloons = () => {
-    sections.forEach((section) => {
-        createSectionObserver(section)
-
-        const balloons = section.querySelectorAll('.balloon')
-        
-        balloons.forEach((balloon, index) => {
-            let sectionRect = section.getBoundingClientRect() // redundant
-            let quadrantIndex = (index + 1) % 4
-            quadrantIndex = quadrantIndex > 0 ? quadrantIndex : 4
-
-            if (quadrantIndex % 2 === 0) {
-                balloon.style.left = `${Math.random() * (sectionRect.width / 2)}px`
-            } else {
-                let clampedX = clamp(Math.random() + 0.5, 0.5, 1) * sectionRect.width
-                
-                balloon.style.left = `${clampedX}px`
-            }
-            if (quadrantIndex < 3) {
-                balloon.style.top = `${Math.random() * (sectionRect.height / 2)}px`
-            } else {    
-                let clampedY = clamp(Math.random() + 0.5, 0.5, 1) * sectionRect.height
-
-                balloon.style.top = `${clampedY}px`
-            }
-        })
-    })
-}
-releaseTheBalloons()
-
-window.addEventListener('resize', () => {
-    releaseTheBalloons()
-})
+addHero()
 
 // menu
 const menuCTA = document.querySelector('.menu-cta')
-
-import { Menu } from './js/menu.js'
-
 const myMenu = new Menu(menuCTA)
 
 // get the weather
-import { Weather } from './js/weather.js'
-const WeatherGenerator = new Weather()
-const weatherReport = WeatherGenerator.generateReport()
+const addWeatherSection = () => {
+    const WeatherGenerator = new Weather()
+    const weatherReport = WeatherGenerator.generateReport()
+    myMenu.appendContent(weatherReport)
+    myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getGeo)
+}
+addWeatherSection()
 
-myMenu.appendContent(weatherReport)
-myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getGeo)
+// generate intro section
+const addIntroSection = () => {
+    const introSection = new Section('Intro', sectionCount)
+    introSection.setTitle('Sup!')
+
+    let p1 = document.createElement('p')
+    p1.textContent = 'Jersey raised, VA grown, California on my own'
+
+    let p2 = document.createElement('p')
+    p2.textContent = `
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam nulla excepturi nam voluptate obcaecati placeat accusantium assumenda temporibus vero consectetur eos beatae libero iusto earum cum, hic ratione, suscipit error.
+    `
+
+    introSection.addContent(p1)
+    introSection.addContent(p2)
+    
+    introSection.render()
+    sectionCount++
+}
+addIntroSection()
+
+// generate country sections
+const addCountrySections = () => {
+    Countries.forEach((country) => {
+        let { name, ...content } = { ...country } 
+        let section = new Section(name, sectionCount, content)
+        section.setTitle(name)
+        section.render()
+        sectionCount++
+    })
+}
+addCountrySections()
+
+// create pachinko section
+const addPachinko = () => {
+    const pachinkoSection = new Section('Pachinko', sectionCount)
+    pachinkoSection.setTitle('Up for a Challenge?')
+    pachinkoSection.render()
+    sectionCount++
+}
+addPachinko()
