@@ -94,7 +94,6 @@ class Section {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     target.classList.add('is-visible')
-                    console.log('show')
     
                     if (entry.intersectionRatio === 0.5) {
                         console.log('visible')

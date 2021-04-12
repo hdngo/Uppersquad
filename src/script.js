@@ -37,9 +37,6 @@ const myMenu = new Menu(menuCTA)
 // get the weather
 const addWeatherSection = () => {
     const weatherReport = new WeatherReport()
-    // const weatherReport = WeatherGenerator.generateReport()
-    // myMenu.appendContent(weatherReport)
-    // myMenu.appendContent(weatherReport.el)
     // myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getWeather)
 }
 addWeatherSection()
