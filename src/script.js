@@ -1,9 +1,11 @@
 import './scss/index.scss'
-
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+// had a regeneratorruntime not defnied issue, hence ^, see: https://stackoverflow.com/questions/53558916/babel-7-referenceerror-regeneratorruntime-is-not-defined
 const Countries =  require('../data/countries.json').countries
 import { Header } from './js/header.js'
 import { Menu } from './js/menu.js'
-import { Weather } from './js/weather.js'
+import { WeatherReport } from './js/weatherReport.js'
 import { Hero } from './js/hero.js'
 import { Section } from './js/section.js'
 
@@ -34,10 +36,11 @@ const myMenu = new Menu(menuCTA)
 
 // get the weather
 const addWeatherSection = () => {
-    const WeatherGenerator = new Weather()
-    const weatherReport = WeatherGenerator.generateReport()
-    myMenu.appendContent(weatherReport)
-    myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getGeo)
+    const weatherReport = new WeatherReport()
+    // const weatherReport = WeatherGenerator.generateReport()
+    // myMenu.appendContent(weatherReport)
+    // myMenu.appendContent(weatherReport.el)
+    // myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getWeather)
 }
 addWeatherSection()
 
