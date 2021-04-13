@@ -9,6 +9,7 @@ class Section {
         this.renderLayout()
         this.content = this.el.querySelector('.section__content')
         this.populateSection()
+        this.isVisible = false
 
         this.releaseTheBalloons = this.releaseTheBalloons.bind(this)
     }
@@ -94,7 +95,8 @@ class Section {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     target.classList.add('is-visible')
-    
+                    this.isVisible = true
+                    
                     if (entry.intersectionRatio === 0.5) {
                         console.log('visible')
                     }
@@ -102,6 +104,7 @@ class Section {
     
                 if (!entry.isIntersecting) {
                     target.classList.remove('is-visible')
+                    this.isVisible = false
                 }
             })
         }, options)

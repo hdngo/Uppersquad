@@ -8,6 +8,7 @@ import { Menu } from './js/menu.js'
 import { WeatherReport } from './js/weatherReport.js'
 import { Hero } from './js/hero.js'
 import { Section } from './js/section.js'
+import { PachinkoGame} from './js/pachinkoGame.js'
 
 import * as dat from 'dat.gui'
 
@@ -32,14 +33,14 @@ addHero()
 
 // menu
 const menuCTA = document.querySelector('.menu-cta')
-const myMenu = new Menu(menuCTA)
+// const myMenu = new Menu(menuCTA)
 
 // get the weather
 const addWeatherSection = () => {
     const weatherReport = new WeatherReport()
     // myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getWeather)
 }
-addWeatherSection()
+// addWeatherSection()
 
 // generate intro section
 const addIntroSection = () => {
@@ -75,10 +76,29 @@ const addCountrySections = () => {
 addCountrySections()
 
 // create pachinko section
-const addPachinko = () => {
+const addPachinkoSection = () => {
     const pachinkoSection = new Section('Pachinko', sectionCount)
     pachinkoSection.setTitle('Up for a Challenge?')
     pachinkoSection.render()
     sectionCount++
+
+    // note: canvas being injected creates a 'lag' issue
+    // probably because it takes time to paint/render
+    // temporarily adding logic to wait until the section is visible to inject it
+    let pachinkoGame = document.querySelector('.pachinko-stall')
+    window.addEventListener('scroll', () => {
+        if (pachinkoSection.isVisible) {
+            if (!pachinkoGame) {
+                // @todo: need to subtract border width
+                const sizes = {
+                    width: pachinkoSection.content.getBoundingClientRect().width,
+                    height: pachinkoSection.content.getBoundingClientRect().height
+                }
+
+                let game = new PachinkoGame(sizes)
+                pachinkoGame = document.querySelector('.pachinko-stall')
+            }
+        }
+    })
 }
-addPachinko()
+addPachinkoSection()
