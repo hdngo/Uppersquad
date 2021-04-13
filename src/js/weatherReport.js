@@ -1,18 +1,23 @@
 class WeatherReport {
     constructor() {
         this.defaults = {
-            lat: 37.39,
-            long: -121.87
+            lat: 37.77,
+            long: -122.42
         }
 
-        this.userLocation = this.getGeo()
+        /* this.defaults = {
+            lat: 37.39,
+            long: -121.87
+        } */
+
         this.geoEnabled = navigator.geolocation
         this.baseUrl = 'https://api.openweathermap.org/data/2.5/'
         this.getCurrentWeather = this.getCurrentWeather.bind(this)
-        
+        this.getGeo = this.getGeo.bind(this)
+        this.el = this.getGeo()
         // should generate report right off the bat with user or default location
         // @todo: on page change, use location of country and update report
-        this.el = this.getCurrentWeather(this.userLocation)
+        // this.el = this.getCurrentWeather(this.userLocation)
     }
 
     // @todo: time permitting, use hourly data to generate graph
@@ -35,6 +40,7 @@ class WeatherReport {
         overviewEl.appendChild(headlineEl)
 
         // create icon
+        // note: need to practice more w/ async await
         const iconEl = this.getIcon(weatherData.weather[0].icon)
         overviewEl.appendChild(iconEl)
 
@@ -151,32 +157,25 @@ class WeatherReport {
             const lat = position.coords.latitude
             const long = position.coords.longitude
 
-            return {
+            const latLong = {
                 lat: lat,
                 long: long
             }
+
+            this.userLocation = latLong
+            this.getCurrentWeather(latLong)
         }
 
         const error = () => {
             // @todo: show error message ui
             console.log(`There was an error trying to retrieve your location, so here's mine.. o_o?`)
             // should have a better error message tbh
-
-            return {
-                lat: this.defaults.lat,
-                long: this.defaults.long
-            }
+            // console.log('use da defaults')
+            this.userLocation = this.defaults
+            const weatherReport = this.getCurrentWeather(this.userLocation)
         }
 
-        if (this.geoEnabled) {
-            navigator.geolocation.getCurrentPosition(success, error)
-        } else {
-            console.log('use da defaults')
-            return {
-                lat: this.defaults.lat,
-                long: this.defaults.long
-            }
-        }
+        navigator.geolocation.getCurrentPosition(success, error)
     }
 
     getCurrentWeather = async (location) => {
