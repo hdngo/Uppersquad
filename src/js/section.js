@@ -80,13 +80,13 @@ class Section {
         return balloonEl
     }
 
-    createSectionObserver = (targetEl, threshold) => {
+    createSectionObserver = (targetEl) => {
         let observer
     
         let options = {
             root: null,
             rootMargin: "0px",
-            threshold: threshold || 0.01
+            threshold: [0.01, 1]
         }
     
         let target = targetEl
@@ -95,11 +95,13 @@ class Section {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     target.classList.add('is-visible')
-                    this.isVisible = true
-                    
-                    if (entry.intersectionRatio === 0.5) {
-                        console.log('visible')
-                    }
+                    this.isVisible = true                   
+                }
+                
+                if (entry.intersectionRatio === 1) {
+                    target.classList.add('is-full-view')
+                } else {
+                    target.classList.remove('is-full-view')
                 }
     
                 if (!entry.isIntersecting) {

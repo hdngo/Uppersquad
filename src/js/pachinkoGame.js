@@ -30,18 +30,13 @@ class PachinkoGame {
                 'goldenrod',
                 'grey'
             ],
-            radius: this.canvas.width / 25,
+            radius: 30,
             bounce: 0.8, // https://en.wikipedia.org/wiki/Coefficient_of_restitution
             velocity: {
                 x: 3.7, // arbitrary
                 y: 2 // arbitrary
-            },
-            delta: {
-                x: 0,
-                y: 0
             }
         }
-        console.log(this.canvas.height - this.ball.radius)
 
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this)
         this.keyUpHandler = this.keyUpHandler.bind(this)
@@ -114,17 +109,24 @@ class PachinkoGame {
         this.ball.position.x = this.canvas.width / 2
         this.ball.position.y = 30
         this.ball.velocity.x = 3.7
-        this.ball.velocity.y = 2 
+        this.ball.velocity.y = 2
         document.addEventListener('mousemove', this.mouseMoveHandler)
     }
 
     resizeHandler = (e) => {
+        const parentElement = this.container.parentElement
+        const borderLeftWidth = getComputedStyle(this.canvas).getPropertyValue('border-left-width')
+        const borderRightWidth = getComputedStyle(this.canvas).getPropertyValue('border-right-width')
+        const borderWidth = parseInt(borderLeftWidth.replace('px', ''))+ parseInt(borderRightWidth.replace('px', ''))
+
         const sizes = {
-            width: this.container.parentElement.getBoundingClientRect().width,
-            height: this.container.parentElement.getBoundingClientRect().height
+            width: parentElement.getBoundingClientRect().width - borderWidth - 40,
+            height: parentElement.getBoundingClientRect().height
         }
 
         this.setCanvasDimensions(sizes)
+
+        this.reset()
     }
 
     releaseBall = () => {
@@ -139,9 +141,17 @@ class PachinkoGame {
 
 
     drawScore = () => {
-        this.ctx.font = "16px Helvetica"
+        this.ctx.font = "16px robotothin"
         this.ctx.fillStyle = "#00CCC"
         this.ctx.fillText(`Score: ${this.score}`, 8, 20)
+    }
+
+    drawInstructions = () => {
+        this.ctx.font = "22px robotothin"
+        this.ctx.fillstyle = "teal"
+        this.ctx.fillText("Click to begin.", this.canvas.width * 0.1, this.canvas.height /2 - 12)
+        this.ctx.font = "16px robotothin"
+        this.ctx.fillText("Press the Space key to restart.", this.canvas.width * 0.1, this.canvas.height / 2 + 30)
     }
 
     drawBall = () => {
@@ -156,6 +166,7 @@ class PachinkoGame {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.drawBall()
         // this.drawScore()
+        this.drawInstructions()
 
         // physics application
         if (this.isActive) {

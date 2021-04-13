@@ -20,6 +20,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'robotothin';
+    src: url('~/static/fonts/roboto-thin-webfont.woff2') format('woff2'),
+         url('~/static/fonts/roboto-thin-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 $breakpoints: (
     "s": 640px,
     "m": 768px,
@@ -116,7 +124,8 @@ p {
 }
 
 .header__control,
-.weather__control {
+.weather__control,
+.up {
     height: 40px;
     width: 40px;
     border-radius: 20px;
@@ -352,17 +361,26 @@ span[class^="hero__title-"] {
     will-change: opacity;
 }
 
+.cheese {
+    display: none;
+
+    &.is-visible {
+        display: inline-block; // block of cheese, get it?
+    }
+}
+
 
 .section {
     height: 500px;
     width: 100%;
-    padding: 30px;
+    padding: 30px 15px 30px 30px;
     transition: background-color 1.5s ease-in-out;
     position: relative;
     // note: overflow visible only works when it's set on both x and y, otw sets to auto
 
     @include breakpoint('m') {
         padding: 100px;
+        padding: 100px 30px 100px 100px;
     }
 
     * {
@@ -429,7 +447,7 @@ span[class^="hero__title-"] {
         min-width: 0;
         width: auto;
         background-color: teal;
-        opacity: 0.25;
+        opacity: 0.225;
         transition: min-width 0.7s linear 0.2s;
     }
 
@@ -445,11 +463,31 @@ span[class^="hero__title-"] {
 }
 
 .section-intro {
+    height: auto;
+    width: 100%;
+    
+    .section__content {
+        margin: 50px 0;
 
+        @include breakpoint('m') {
+            margin: 75px 0;
+        }
+    }
+}
+
+.section-costa-rica .section__background {
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-15deg);
+        transform-style: preserve-3d;
+    }
 }
 
 .section-costa-rica.is-visible .section__background {
     $colors: red, blue;
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-15deg);
+    }
+    
     &::before {
         background-color: red;
     }
@@ -469,8 +507,16 @@ span[class^="hero__title-"] {
     }
 }
 
+.section-switzerland .section__background {
+    &::before, &::after {
+        transform: scale(1.1) rotateZ(5deg);
+    }
+}
 .section-switzerland.is-visible .section__background {
     $colors: red, $slate;
+    &::before, &::after {
+        transform: scale(1.1) rotateZ(5deg);
+    }
 
     &::before {
         background-color: white;
@@ -495,8 +541,17 @@ span[class^="hero__title-"] {
     }
 }
 
+.section-canada .section__background {
+    &::before, &::after {
+        transform: scaleX(-1.3) rotateZ(10deg);
+    }
+}
+
 .section-canada.is-visible .section__background {
     $colors: red, $slate;
+    &::before, &::after {
+        transform: scaleX(-1.3) rotateZ(10deg);
+    }
     
     &::before {
         background-color: red;
@@ -539,9 +594,19 @@ span[class^="hero__title-"] {
     }
 }
 
+.section-new-zealand .section__background {
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-6deg);
+    }
+
+}
+
 .section-new-zealand.is-visible .section__background {
     $colors: blue, red;
-
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-6deg);
+    }
+    
     &::before {
         background-color: blue
     }
@@ -625,12 +690,12 @@ span[class^="hero__title-"] {
     }
 }
 
-.section-intro {
-    height: 100%;
-    width: 100%;
-}
-
 .section-reverse {
+    padding: 30px 30px 30px 15px;
+
+    @include breakpoint('m') {
+        padding: 100px 30px 100px 100px;
+    }
     .section__content {
         align-items: flex-end;
     }
@@ -678,4 +743,132 @@ span[class^="hero__title-"] {
     &:hover {
         cursor: grab;
     }
+}
+
+.container {
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    opacity: 0.4;
+    transition: 0.4s opacity cubic-bezier(0.6, 0.04, 0.98, 0.335);
+}
+
+.section.is-full-view {
+    .container {
+        opacity: 1;
+    }
+}
+
+.section-reverse .container {
+    flex-direction: row-reverse;
+    text-align: right;
+
+    .card {
+        &:after {
+            left: auto;
+            right: -15%;
+            top: -8%;
+            height: 115%;
+            border-color: #cc5500;
+        }
+
+        img {
+            box-shadow: 9px 12px 12px rgba(#cc5500, 35%);
+        }
+    }
+    .blurb {
+        span {
+            margin-left: 0;
+            margin-right: 15px;
+        }
+    }
+}
+
+.card {
+    display: inline-flex;
+    width: 50%;
+    padding: 10px;
+    position: relative;
+    transform: translate3d(0, 60px, 0);
+
+    @include breakpoint('m') {
+        width: 45%;
+    }
+
+    &:after {
+        content: '';
+        height: 100%;
+        width: 100%;
+        background-color: transparent;
+        border: 10px solid teal;
+        position: absolute;
+        top: 10%;
+        left: -15%;
+        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1);
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+        box-shadow: -11px 13px 19px rgba(teal, 35%);
+        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1);
+    }
+
+    &:hover {
+        cursor: pointer;
+        img {
+            transform: scale(1.125)
+        }
+    }
+}
+
+.card:hover:after {
+    transform: rotateZ(180deg);
+    transform-style: preserve-3d;
+}
+
+.blurb {
+    display: inline-flex;
+    flex-direction: column;
+    width: 50%;
+    font-family: 'robotothin', 'sans-serif', 'serif';
+    transform: translate3d(0, -30px, 0);
+    z-index: 2;
+
+    @include breakpoint('m') {
+        width: 55%;
+    }
+
+    h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    p {
+        font-size: 1.4rem;
+    }
+    span {
+        display: block;
+        font-weight: 700;
+        margin-left: 25px;
+        margin-bottom: 15px;
+    }
+}
+
+.section-pachinko.is-visible {
+    .up {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.up {
+    position: fixed;
+    opacity: 0;
+    left: 30px;
+    bottom: 60px;
+    visibility: hidden;
+    transition: 0.7s all ease-in-out;
 }

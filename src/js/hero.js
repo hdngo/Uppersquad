@@ -18,7 +18,7 @@ class Hero {
                 <br/>
                 <span class="hero__subtitle">
                     <span class="hero__title-is">is</span> 
-                    <span class="hero__title-up">UP
+                    <span class="hero__title-up">UP<span class="cheese">PERQUAD</span><span
                 </span>
             </span>
         `

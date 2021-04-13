@@ -8,7 +8,12 @@
                 "Bullet Ants",
                 "Howler Monkies",
                 "Rafting"
-            ]
+            ],
+            "blurb": {
+                "headline": "21yo first time flier",
+                "phrase": "excited and scared outta my mind"
+            },
+            "image": "/images/waterbending.jpg"
         },
         {
             "name": "Switzerland",
@@ -18,7 +23,12 @@
                 "Interlaken",
                 "Goose",
                 "Poor Wallet"
-            ]
+            ],
+            "blurb": {
+                "headline": "Solo Eurotrippin",
+                "phrase": "when I'm rich I'll go back"
+            },
+            "image": "/images/goose.jpg"
         },
         {
             "name": "Canada",
@@ -28,7 +38,12 @@
                 "Frozen...",
                 "Avalanches",
                 "Poutine"
-            ]
+            ],
+            "blurb": {
+                "headline": "College Reunion #1",
+                "phrase": "good thing the lake stayed frozen"
+            },
+            "image": "/images/shakeitlikea.jpg"
         },
         {
             "name": "Vietnam",
@@ -38,7 +53,12 @@
                 "Da Nang",
                 "Mopeds EVERYWHERE",
                 "Sweat"
-            ]
+            ],
+            "blurb": {
+                "headline": "The Homeland",
+                "phrase": "hue hue hue"
+            },
+            "image": "/images/fambam.jpg"
         },
         {
             "name": "New Zealand",
@@ -48,7 +68,12 @@
                 "Oyster Adventure",
                 "Lamburgers",
                 "Alpacas"
-            ]
+            ],
+            "blurb": {
+                "headline": "College Reunion #2",
+                "phrase": "..waterfall wasn't frozen.."
+            },
+            "image": "/images/rideanddied.jpg"
         }
     ]
 }
