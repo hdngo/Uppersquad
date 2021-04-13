@@ -23,7 +23,9 @@ module.exports = {
             template: path.resolve(__dirname, '../src/index.html'),
             minify: false
         }),
-        new Dotenv()    
+        new Dotenv({
+            systemvars: true
+        })    
         // new MiniCSSExtractPlugin()
     ],
     module:
