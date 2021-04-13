@@ -133,6 +133,7 @@ class WeatherReport {
         let iconEl = document.createElement('img')
         iconEl.classList.add('weather-icon')
 
+        // @todo: solve cors issue for lodaing image
         fetch(`http://openweathermap.org/img/wn/${iconCode}@2x.png`, {
             mode: 'cors'
         })

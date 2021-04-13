@@ -10,38 +10,37 @@ import { Hero } from './js/hero.js'
 import { Section } from './js/section.js'
 import { PachinkoGame} from './js/pachinkoGame.js'
 
-window.addEventListener('load', () => {
-    
-    let sectionCount = 0
-    
-    // header
-    const addHeader = () => {
+class App {
+    constructor() {
+        this.sectionCount = 0
+        this.main = document.querySelector('main')
+        this.countryData = Countries
+        this.countrySections = {}
+    }
+
+    addHeader = () => {
         const header = new Header()
+        this.menuTrigger = document.querySelector('.menu-cta')
     }
-    addHeader()
-    
-    // hero
-    const addHero = () => {
+
+    addHero = () => {
         const hero = new Hero()
-    
         hero.el.classList.add('is-visible')
+        this.hero = hero
     }
-    addHero()
-    
-    // menu
-    const menuCTA = document.querySelector('.menu-cta')
-    const myMenu = new Menu(menuCTA)
-    
-    // get the weather
-    const addWeatherSection = () => {
+
+    addMenu = () => {
+        const menu = new Menu(this.menuTrigger)
+        this.menu = menu
+    }
+
+    addWeatherReport = () => {
         const weatherReport = new WeatherReport()
-        // myMenu.weatherCTA.addEventListener('click', WeatherGenerator.getWeather)
+        this.weatherReport = weatherReport
     }
-    addWeatherSection()
-    
-    // generate intro section
-    const addIntroSection = () => {
-        const introSection = new Section('Intro', sectionCount)
+
+    addIntroSection = () => {
+        const introSection = new Section('Intro', this.sectionCount)
         introSection.setTitle('Heyo!')
     
         const container = document.createElement('div')
@@ -54,8 +53,9 @@ window.addEventListener('load', () => {
     
         const jerseyDiv = document.createElement('div')
         jerseyDiv.classList.add('card', 'card-jersey')
-        const jerseyImg = document.createElement('img')
-        jerseyImg.setAttribute("src", "/images/joyz.jpg")
+        const jerseyImg = document.createElement('div')
+        jerseyImg.classList.add('image')
+        jerseyImg.style.backgroundImage = `url("/images/joyz.jpg")`
         jerseyDiv.appendChild(jerseyImg)
         
         container.appendChild(jerseyDiv)
@@ -63,15 +63,14 @@ window.addEventListener('load', () => {
         introSection.addContent(container)
         
         introSection.render()
-        sectionCount++
+        this.sectionCount++
+        this.intro = introSection
     }
-    addIntroSection()
-    
-    // generate country sections
-    const addCountrySections = () => {
-        Countries.forEach((country) => {
+
+    addCountrySections = () => {
+        this.countryData.forEach((country) => {
             let { name, ...content } = { ...country } 
-            let section = new Section(name, sectionCount, content)
+            let section = new Section(name, this.sectionCount, content)
             section.setTitle(name)
     
             const container = document.createElement('div')
@@ -84,8 +83,9 @@ window.addEventListener('load', () => {
     
             const cardEl = document.createElement('div')
             cardEl.classList.add('card', `card-${name.replace(/ /g, '-').toLowerCase()}`)
-            const cardImg = document.createElement('img')
-            cardImg.setAttribute("src", content.image)
+            const cardImg = document.createElement('div')
+            cardImg.classList.add('image')
+            cardImg.style.backgroundImage = `url(${content.image})`
             cardEl.appendChild(cardImg)
             
             container.appendChild(cardEl)
@@ -93,26 +93,30 @@ window.addEventListener('load', () => {
             section.addContent(container)
     
             section.render()
-            sectionCount++
+            this.sectionCount++
+            this.countrySections[name] = section
         })
     }
-    addCountrySections()
-    
-    // create pachinko section
-    const addPachinkoSection = () => {
-        const pachinkoSection = new Section('Pachinko', sectionCount)
+
+    setupPachinko = () => {
+        const pachinkoSection = new Section('Pachinko', this.sectionCount)
         pachinkoSection.setTitle('Up for a Challenge?')
         pachinkoSection.render()
-        sectionCount++
+        this.sectionCount++
+        this.pachinkoSection = pachinkoSection
     
         // note: canvas being injected creates a 'lag' issue
         // probably because it takes time to paint/render
         // temporarily adding logic to wait until the section is visible to inject it
         let pachinkoGame = document.querySelector('.pachinko-stall')
+
         window.addEventListener('scroll', () => {
             if (pachinkoSection.isVisible) {
                 if (!pachinkoGame) {
-                    // @todo: need to subtract border width
+                    // @todo: use computed styles
+                    // 1st 40 is for translated value
+                    // 2nd 40 is for left+right border width
+                    // edward 40 hands
                     const sizes = {
                         width: pachinkoSection.content.getBoundingClientRect().width - 40 - 40,
                         height: pachinkoSection.content.getBoundingClientRect().height
@@ -126,7 +130,6 @@ window.addEventListener('load', () => {
                     upButton.textContent = 'up'
     
                     upButton.addEventListener('click', () => {
-                        const main = document.querySelector('main')
                         const cheese = document.querySelector('.cheese')
                         cheese.classList.add('is-visible')
                         window.scrollTo({
@@ -140,5 +143,17 @@ window.addEventListener('load', () => {
             }
         })
     }
-    addPachinkoSection()
-})
+
+    render = () => {
+        this.addHeader()
+        this.addHero()
+        this.addMenu()
+        this.addWeatherReport()
+        this.addIntroSection()
+        this.addCountrySections()
+        this.setupPachinko()
+    }
+}
+
+const app = new App()
+app.render()

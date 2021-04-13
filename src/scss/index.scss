@@ -776,8 +776,15 @@ span[class^="hero__title-"] {
             border-color: #cc5500;
         }
 
-        img {
-            box-shadow: 9px 12px 12px rgba(#cc5500, 35%);
+        .image {
+            background-color: teal;
+            border: 10px solid teal;
+            
+            @include breakpoint('m') {
+                box-shadow: 9px 12px 12px rgba(#cc5500, 35%);
+                background-color: transparent;
+                border: none;
+            }
         }
     }
     .blurb {
@@ -793,7 +800,7 @@ span[class^="hero__title-"] {
     width: 30%;
     padding: 10px;
     position: relative;
-    transform: translate(0, 60px);
+    transform: translate(0, 30px);
 
     @include breakpoint('m') {
         width: 40%;
@@ -810,16 +817,29 @@ span[class^="hero__title-"] {
         left: -15%;
     }
 
-    img {
+    .image {
+        height: 200px;
         width: 100%;
-        height: auto;
-        box-shadow: -11px 13px 19px rgba(teal, 35%);
-        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 0% 0%;
+        background-color: orange;
+        border: 10px solid orange;
+        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1);    
+        
+        @include breakpoint('m') {
+            height: 350px;
+            box-shadow: -11px 13px 19px rgba(rgb(75, 77, 77), 35%);
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            background-size: cover;
+        }
     }
 
     &:hover {
         cursor: pointer;
-        img {
+        .image {
             transform: scale(1.125)
         }
     }
