@@ -3,6 +3,7 @@ const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const newCssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = merge(
     common,
@@ -19,6 +20,9 @@ module.exports = merge(
             //       { from: '_redirects' }
             //     ]
             // })
+            new Dotenv({
+                systemvars: true
+            })    
         ],
         module: {
             rules: [

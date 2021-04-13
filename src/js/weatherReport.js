@@ -133,12 +133,14 @@ class WeatherReport {
         let iconEl = document.createElement('img')
         iconEl.classList.add('weather-icon')
 
-        fetch(`http://openweathermap.org/img/wn/${iconCode}@2x.png`)
-            .then(response => response.blob())
-            .then((iconBlob) => {
-                const imageURL = URL.createObjectURL(iconBlob)
-                iconEl.src = imageURL
-            })
+        fetch(`http://openweathermap.org/img/wn/${iconCode}@2x.png`, {
+            mode: 'cors'
+        })
+        .then(response => response.blob())
+        .then((iconBlob) => {
+            const imageURL = URL.createObjectURL(iconBlob)
+            iconEl.src = imageURL
+        })
 
         return iconEl
     }
