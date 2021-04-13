@@ -180,7 +180,7 @@ class WeatherReport {
         try {
             let response = await fetch(
                 // current weather
-                `${this.baseUrl}weather?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=59839023800b2fa8864f25d6d76787ab`
+                `${this.baseUrl}weather?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=${process.env.MYAPPID}`
             )
 
             if (!response.ok) {
