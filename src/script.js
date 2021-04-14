@@ -115,25 +115,24 @@ class App {
             let { name, ...content } = { ...country } 
             let section = new Section(name, this.sectionCount, content)
             section.setTitle(name)
-    
-            const container = document.createElement('div')
-            container.classList.add('container')
-    
-            const blurb = document.createElement('div')
-            blurb.classList.add('blurb')
-            blurb.innerHTML = `<h3>${content.blurb.headline}</h3><p><span>${content.blurb.phrase}</span></p>`
-            container.appendChild(blurb)
-    
-            const cardEl = document.createElement('div')
-            cardEl.classList.add('card', `card-${name.replace(/ /g, '-').toLowerCase()}`)
-            const cardImg = document.createElement('div')
-            cardImg.classList.add('image')
-            cardImg.style.backgroundImage = `url(${content.image})`
-            cardEl.appendChild(cardImg)
-            
-            container.appendChild(cardEl)
-    
-            section.addContent(container)
+
+            let containerEl = new DOMParser().parseFromString(
+                `
+                    <div class="container">
+                        <div class="blurb">
+                            <h3>${content.blurb.headline}</h3>
+                            <p><span>${content.blurb.phrase}</span></p>
+                        </div>
+                        <div class="card card-${name.replace(/ /g, '-').toLowerCase()}">
+                            <div class="image" style="background-image: url(${content.image})">
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'text/html'
+            )
+            containerEl = containerEl.body.firstChild
+            section.addContent(containerEl)
     
             section.render()
             this.sectionCount++

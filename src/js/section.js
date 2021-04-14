@@ -26,6 +26,7 @@ class Section {
         }
         
         sectionEl.setAttribute('id', `section-${this.id}`)
+        sectionEl.setAttribute('data-section-name', `${this.title.replace(/ /g, '-').toLowerCase()}`)
 
         return sectionEl
     }
@@ -93,6 +94,9 @@ class Section {
     
         observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
+                const activeSideNavItem = document.querySelector('.sidenav__item.is-active')
+                const sideNavItem = document.querySelector(`a[data-country="${target.getAttribute('data-section-name')}"]`)
+
                 if (entry.isIntersecting) {
                     target.classList.add('is-visible')
                     this.intersected = true                   
@@ -106,8 +110,15 @@ class Section {
 
                 if (entry.intersectionRatio === 1) {
                     target.classList.add('is-full-view')
+                    
+                    if (sideNavItem) {
+                        sideNavItem.classList.add('is-active')
+                    }
                 } else {
                     target.classList.remove('is-full-view')
+                    if (sideNavItem) {
+                        sideNavItem.classList.remove('is-active')
+                    }
                 }
     
                 if (!entry.isIntersecting) {

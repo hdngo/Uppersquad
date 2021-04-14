@@ -80,11 +80,10 @@ class SideNav {
         window.dispatchEvent(flyEvent)
         
         window.scrollTo({
-            top: targetSection.offsetTop,
+            top: targetSection.offsetTop - 1,
             left: 0,
             behavior: 'smooth'
         })
-        // this.weatherReport.getCurrentWeather(item)
 
         const main = document.querySelector('main')
 
