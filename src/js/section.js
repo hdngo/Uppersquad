@@ -9,7 +9,7 @@ class Section {
         this.renderLayout()
         this.content = this.el.querySelector('.section__content')
         this.populateSection()
-        this.isVisible = false
+        this.intersected = false
 
         this.releaseTheBalloons = this.releaseTheBalloons.bind(this)
     }
@@ -86,7 +86,7 @@ class Section {
         let options = {
             root: null,
             rootMargin: "0px",
-            threshold: [0.01, 1]
+            threshold: [0.01]
         }
     
         let target = targetEl
@@ -95,18 +95,17 @@ class Section {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     target.classList.add('is-visible')
-                    this.isVisible = true                   
+                    this.intersected = true                   
                 }
                 
-                if (entry.intersectionRatio === 1) {
+                /* if (entry.intersectionRatio === 1) {
                     target.classList.add('is-full-view')
                 } else {
                     target.classList.remove('is-full-view')
-                }
+                } */
     
                 if (!entry.isIntersecting) {
                     target.classList.remove('is-visible')
-                    this.isVisible = false
                 }
             })
         }, options)

@@ -170,7 +170,6 @@ class WeatherReport {
             // @todo: show error message ui
             console.log(`There was an error trying to retrieve your location, so here's mine.. o_o?`)
             // should have a better error message tbh
-            // console.log('use da defaults')
             this.userLocation = this.defaults
             const weatherReport = this.getCurrentWeather(this.userLocation)
         }
@@ -202,7 +201,7 @@ class WeatherReport {
     getForecast = async (location) => {
         try {
             let response = await fetch(
-                `${this.baseUrl}onecall?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=59839023800b2fa8864f25d6d76787ab`
+                `${this.baseUrl}onecall?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=${process.env.MYAPPID}`
             )
     
             if (!response.ok) {

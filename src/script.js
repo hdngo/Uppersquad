@@ -110,8 +110,8 @@ class App {
         // temporarily adding logic to wait until the section is visible to inject it
         let pachinkoGame = document.querySelector('.pachinko-stall')
 
-        window.addEventListener('scroll', () => {
-            if (pachinkoSection.isVisible) {
+        const initializePachinko = () => {
+            if (pachinkoSection.intersected) {
                 if (!pachinkoGame) {
                     // @todo: use computed styles
                     // 1st 40 is for translated value
@@ -139,9 +139,13 @@ class App {
                         })
                     })
                     pachinkoSection.addContent(upButton)
+                } else {
+                    window.removeEventListener('scroll', initializePachinko)
                 }
             }
-        })
+        }
+        window.addEventListener('scroll', initializePachinko, false)
+
     }
 
     render = () => {

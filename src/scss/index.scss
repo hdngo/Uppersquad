@@ -64,6 +64,7 @@ main {
     position: relative;
     overflow-x: hidden;
     padding-bottom: 100px;
+    overscroll-behavior: none; //https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
 }
 
 main::-webkit-scrollbar {
@@ -380,7 +381,7 @@ span[class^="hero__title-"] {
 
     @include breakpoint('m') {
         padding: 100px;
-        padding: 100px 30px 100px 100px;
+        padding: 30px;
     }
 
     * {
@@ -694,7 +695,7 @@ span[class^="hero__title-"] {
     padding: 30px 30px 30px 15px;
 
     @include breakpoint('m') {
-        padding: 100px 30px 100px 100px;
+        padding: 30px;
     }
     .section__content {
         align-items: flex-end;
@@ -727,6 +728,8 @@ span[class^="hero__title-"] {
 
 .section-pachinko {
     height: 680px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .pachinko-stall {
@@ -740,8 +743,6 @@ span[class^="hero__title-"] {
     background: white;
     border: 20px solid rgb(225, 0, 255);
     transform: translate(40px, -45px);
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
 
     &:hover {
         cursor: grab;
@@ -757,11 +758,11 @@ span[class^="hero__title-"] {
     transition: 0.4s opacity cubic-bezier(0.6, 0.04, 0.98, 0.335);
 }
 
-.section.is-full-view {
-    .container {
-        opacity: 1;
-    }
-}
+// .section.is-full-view {
+//     .container {
+//         opacity: 1;
+//     }
+// }
 
 .section-reverse .container {
     flex-direction: row-reverse;
