@@ -125,7 +125,6 @@ p {
 }
 
 .header__control,
-.weather__control,
 .up {
     height: 40px;
     width: 40px;
@@ -185,10 +184,21 @@ p {
     width: 100%;
 }
 
+.weather__controls {
+    text-align: right;
+}
+
 .weather__control {
-    position: absolute;
-    bottom: 100%;
-    right: -70px;
+    font-family: 'robotothin', 'sans-serif', 'serif';
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: white;
+    border: 2px solid white;
+    outline: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .webgl
@@ -380,8 +390,7 @@ span[class^="hero__title-"] {
     // note: overflow visible only works when it's set on both x and y, otw sets to auto
 
     @include breakpoint('m') {
-        padding: 100px;
-        padding: 30px;
+        padding: 30px 100px;
     }
 
     * {
@@ -695,7 +704,7 @@ span[class^="hero__title-"] {
     padding: 30px 30px 30px 15px;
 
     @include breakpoint('m') {
-        padding: 30px;
+        padding: 30px 100px;
     }
     .section__content {
         align-items: flex-end;
@@ -735,7 +744,7 @@ span[class^="hero__title-"] {
 .pachinko-stall {
     $background-color: rgba(lighten(darkgoldenrod, 25%), 0.5);
     background: $background-color;
-    margin-top: 60px;
+    margin: 60px auto 0 auto;
 }
 
 #pachinko {
@@ -890,4 +899,39 @@ span[class^="hero__title-"] {
     bottom: 60px;
     visibility: hidden;
     transition: 0.7s all ease-in-out;
+}
+
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 30px;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    z-index: 1;
+
+    @include breakpoint('m') {
+        width: 100px;
+    }
+}
+
+.sidenav__item {
+
+    &:hover {
+        .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(20px, 0);
+        }
+    }
+}
+
+.tooltip {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s all ease-in-out;
 }

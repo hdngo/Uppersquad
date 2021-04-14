@@ -7,7 +7,7 @@ class Menu {
         this.renderLayout()
         this.content = this.el.querySelector('.menu__content')
 
-        this.weatherCTA = this.renderWeatherButton();
+        // this.weatherCTA = this.renderWeatherButton();
 
         this.bindListeners()
     }
@@ -59,7 +59,7 @@ class Menu {
         this.el.classList.remove('menu--is-open')
     }
 
-    renderWeatherButton = () => {
+    /* renderWeatherButton = () => {
         let weatherBtnEl = document.createElement('button')
         weatherBtnEl.classList.add('weather__control')
         weatherBtnEl.textContent = 'W'
@@ -67,7 +67,7 @@ class Menu {
         this.appendContent(weatherBtnEl)
 
         return weatherBtnEl
-    }
+    } */
 
     appendContent = (contentNode) => {
         this.content.appendChild(contentNode)

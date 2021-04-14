@@ -13,7 +13,11 @@
                 "headline": "21yo first time flier",
                 "phrase": "excited and scared outta my mind"
             },
-            "image": "/images/waterbending.jpg"
+            "image": "/images/waterbending.jpg",
+            "location": {
+                "lat": 10.40,
+                "long": 84.12
+            }
         },
         {
             "name": "Switzerland",
@@ -28,7 +32,11 @@
                 "headline": "Solo Eurotrippin",
                 "phrase": "when I'm rich I'll go back"
             },
-            "image": "/images/goose.jpg"
+            "image": "/images/goose.jpg",
+            "location": {
+                "lat": 46.69,
+                "long": 7.86
+            }
         },
         {
             "name": "Canada",
@@ -43,7 +51,11 @@
                 "headline": "College Reunion #1",
                 "phrase": "good thing the lake stayed frozen"
             },
-            "image": "/images/shakeitlikea.jpg"
+            "image": "/images/shakeitlikea.jpg",
+            "location": {
+                "lat": 51.18,
+                "long": -115.57
+            }
         },
         {
             "name": "Vietnam",
@@ -58,7 +70,11 @@
                 "headline": "The Homeland",
                 "phrase": "hue hue hue"
             },
-            "image": "/images/fambam.jpg"
+            "image": "/images/fambam.jpg",
+            "location": {
+                "lat": 16.05,
+                "long": 108.20
+            }
         },
         {
             "name": "New Zealand",
@@ -73,7 +89,11 @@
                 "headline": "College Reunion #2",
                 "phrase": "..waterfall wasn't frozen.."
             },
-            "image": "/images/rideanddied.jpg"
+            "image": "/images/rideanddied.jpg",
+            "location": {
+                "lat": -45.03,
+                "long": 168.66
+            }
         }
     ]
 }

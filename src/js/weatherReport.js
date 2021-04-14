@@ -13,18 +13,54 @@ class WeatherReport {
         this.geoEnabled = navigator.geolocation
         this.baseUrl = 'https://api.openweathermap.org/data/2.5/'
         this.getCurrentWeather = this.getCurrentWeather.bind(this)
+        this.generateLayout()
         this.getGeo = this.getGeo.bind(this)
-        this.el = this.getGeo()
+        this.getGeo()
+        this.generateReport = this.generateReport.bind(this)
+        // this.el = this.getGeo()
         // should generate report right off the bat with user or default location
         // @todo: on page change, use location of country and update report
         // this.el = this.getCurrentWeather(this.userLocation)
+        this.forecastType = 'current'
+        // this.bindListeners()
     }
 
     // @todo: time permitting, use hourly data to generate graph
+    generateLayout = () => {
+        const reportEl = document.createElement('div')
+        reportEl.classList.add('weather-report')
+        const forecastControls = document.createElement('div')
+        forecastControls.classList.add('weather__controls')
+        forecastControls.innerHTML = 
+            `
+                <button class="weather__control weather__control-local">Use My Location</button>
+            `
+        reportEl.appendChild(forecastControls)
+
+        const menuContent = document.querySelector('.menu__content')
+        menuContent.appendChild(reportEl)
+
+        // const locationButton = document.querySelector('.weather__control-local')
+        // locationButton.addEventListener('click', this.getCurrentWeather(this.userLocation))
+        this.el = reportEl
+        this.localWeatherButton = this.el.querySelector('.weather__control-local')
+        this.localWeatherButton.addEventListener('click', () => {
+            console.log('fetching')
+        })
+    }
+
     generateReport = (weatherData) => {
         // type can either be 'user' or 'location', 'user' use `this.userLocation`; `location` use `location` param
-        let reportEl = document.createElement('div')
+       /*  const reportEl = document.createElement('div')
         reportEl.classList.add('weather-report')
+
+        const forecastControls = document.createElement('div')
+        forecastControls.classList.add('weather__controls')
+        forecastControls.innerHTML = 
+            `
+                <button class="weather__control weather__control-local">Use My Location</button>
+            `
+        reportEl.appendChild(forecastControls) */
 
         // console.log(`data received`)
         // console.log(weatherData)
@@ -33,6 +69,7 @@ class WeatherReport {
         // const { current , hourly, daily } = { ...weatherData }
 
         // create overview wrapper
+        // layout
         const overviewEl = document.createElement('div')
         overviewEl.classList.add('weather__overview')
         
@@ -49,19 +86,28 @@ class WeatherReport {
 
         const extremitiesEl = this.createExtremitiesEl(weatherData.main.temp_max, weatherData.main.temp_min)
         overviewEl.appendChild(extremitiesEl)
-        reportEl.appendChild(overviewEl)
+        this.el.appendChild(overviewEl)
 
         const conditionsEl = this.createConditionsEl(weatherData)
         
         const factorsEl = this.createFactorsEl(weatherData.main.humidity, weatherData.wind.speed)
         conditionsEl.appendChild(factorsEl)
         
-        reportEl.appendChild(conditionsEl)
+        this.el.appendChild(conditionsEl)
 
-        const menuContent = document.querySelector('.menu__content')
-        menuContent.appendChild(reportEl)
+        /* const menuContent = document.querySelector('.menu__content')
+        menuContent.appendChild(reportEl) */
+
+        // const locationButton = document.querySelector('.weather__control-local')
+        // locationButton.addEventListener('click', this.getCurrentWeather(this.userLocation))
         
-        return reportEl
+       /*  this.el = reportEl
+        this.localWeatherButton = this.el.querySelector('.weather__control-local')
+        console.log('times') */
+    }
+
+    generateWeeklyForecast = (location) => {
+        console.log(location)
     }
 
     createHeadlineEl = (headline) => {
@@ -163,7 +209,12 @@ class WeatherReport {
             }
 
             this.userLocation = latLong
+            
+            // current weather
             this.getCurrentWeather(latLong)
+
+            // forecast
+            // this.getWeeklyForecast(this.userLocation)
         }
 
         const error = () => {
@@ -171,7 +222,12 @@ class WeatherReport {
             console.log(`There was an error trying to retrieve your location, so here's mine.. o_o?`)
             // should have a better error message tbh
             this.userLocation = this.defaults
+
+            // current weather
             const weatherReport = this.getCurrentWeather(this.userLocation)
+
+            // forecast
+            // this.getWeeklyForecast(this.userLocation)
         }
 
         navigator.geolocation.getCurrentPosition(success, error)
@@ -183,6 +239,7 @@ class WeatherReport {
                 // current weather
                 `${this.baseUrl}weather?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=${process.env.MYAPPID}`
             )
+            console.log('loading')
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -198,12 +255,12 @@ class WeatherReport {
     }
     
     // @todo: implement
-    getForecast = async (location) => {
+    getWeeklyForecast = async (location) => {
         try {
             let response = await fetch(
                 `${this.baseUrl}onecall?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=${process.env.MYAPPID}`
             )
-    
+            console.log('forecasting')
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -211,6 +268,7 @@ class WeatherReport {
             let weatherData = await response.json();
                 // generate report
                 // return this.generateReport(weatherData)
+                this.generateWeeklyForecast()
         } catch(e) {
             console.log(e)
         }

@@ -7,6 +7,7 @@ import { Header } from './js/header.js'
 import { Menu } from './js/menu.js'
 import { WeatherReport } from './js/weatherReport.js'
 import { Hero } from './js/hero.js'
+import { SideNav } from './js/sidenav.js'
 import { Section } from './js/section.js'
 import { PachinkoGame} from './js/pachinkoGame.js'
 
@@ -67,6 +68,17 @@ class App {
         this.intro = introSection
     }
 
+    addSideNav = () => {
+        const sidenav = new SideNav(this.countryData)
+        this.sideNav = sidenav
+        this.main.appendChild(this.sideNav.el)
+
+        const parentEl = document.querySelector('body')
+        const refEl = this.main
+
+        parentEl.insertBefore(this.sideNav.el, refEl)
+    }
+
     addCountrySections = () => {
         this.countryData.forEach((country) => {
             let { name, ...content } = { ...country } 
@@ -118,8 +130,8 @@ class App {
                     // 2nd 40 is for left+right border width
                     // edward 40 hands
                     const sizes = {
-                        width: pachinkoSection.content.getBoundingClientRect().width - 40 - 40,
-                        height: pachinkoSection.content.getBoundingClientRect().height
+                        width: (pachinkoSection.content.getBoundingClientRect().width - 40 - 40) * 0.8,
+                        height: (pachinkoSection.content.getBoundingClientRect().height) * 0.8
                     }
     
                     let game = new PachinkoGame(sizes)
@@ -145,13 +157,13 @@ class App {
             }
         }
         window.addEventListener('scroll', initializePachinko, false)
-
     }
 
     render = () => {
         this.addHeader()
         this.addHero()
         this.addMenu()
+        this.addSideNav()
         this.addWeatherReport()
         this.addIntroSection()
         this.addCountrySections()
