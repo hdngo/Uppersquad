@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'luckiest_guyregular';
+    src: url('~/static/fonts/luckiestguy-regular-webfont.woff2') format('woff2'),
+         url('~/static/fonts/luckiestguy-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'boogalooregular';
+    src: url('~/static/fonts/boogaloo-regular-webfont.woff2') format('woff2'),
+         url('~/static/fonts/boogaloo-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'robotothin';
+    src: url('~/static/fonts/roboto-thin-webfont.woff2') format('woff2'),
+         url('~/static/fonts/roboto-thin-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+$breakpoints: (
+    "s": 640px,
+    "m": 768px,
+    "l": "1024px",
+    "xl": "1280px"
+);
+
+@mixin breakpoint($breakpoint-size) {
+    $min-width: map-get($breakpoints, $breakpoint-size);
+    @media (min-width: $min-width) {
+        @content
+    }
+}
+
+$slate: lighten(#c1caca, 20%);

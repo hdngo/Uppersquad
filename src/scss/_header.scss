@@ -1,0 +1,49 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    position: fixed;
+    top: 10px;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    background-color: transparent;
+    z-index: 11;
+    padding: 10px;
+    margin: 0 20px 0 0;
+    
+    @include breakpoint('m') {
+        margin: 0 20px;
+        top: 0;
+    }
+}
+
+.header__logo {
+    font-size: 40px;
+    transition: 0.4s all ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #cc5500;
+    }
+}
+
+.header__control,
+.up {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    border: 2px solid black;
+    margin: 0 5px;
+    background-color: $slate;
+    outline: none;
+    transition: 0.7s all ease-in-out;
+    
+    &:hover {
+        cursor: pointer;
+        background-color: teal;
+        border-color: teal;
+        color: white;
+    }
+}

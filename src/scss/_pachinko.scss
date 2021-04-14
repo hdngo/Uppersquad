@@ -1,0 +1,22 @@
+.section-pachinko {
+    height: 1000px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.pachinko-stall {
+    $background-color: rgba(lighten(darkgoldenrod, 25%), 0.5);
+    background: $background-color;
+    margin: 60px auto 0 auto;
+}
+
+#pachinko {
+    margin-top: 30px;
+    background: white;
+    border: 20px solid rgb(225, 0, 255);
+    transform: translate(40px, -45px);
+
+    &:hover {
+        cursor: grab;
+    }
+}

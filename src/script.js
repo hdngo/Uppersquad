@@ -40,6 +40,29 @@ class App {
         this.weatherReport = weatherReport
     }
 
+    addUpButton = () => {
+        let upButton = new DOMParser().parseFromString(
+            `
+                <button class="up">UP</button>
+            `,
+            'text/html'
+        )
+        upButton = upButton.body.firstChild
+        this.main.appendChild(upButton)
+        this.upButton = upButton
+        upButton.addEventListener('click', (e) => {
+            const cheese = document.querySelector('.cheese')
+            cheese.classList.add('is-visible')
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            })
+
+            e.target.classList.remove('is-visible')
+        })
+    }
+
     addIntroSection = () => {
         const introSection = new Section('Intro', this.sectionCount)
         introSection.setTitle('Heyo!')
@@ -54,6 +77,7 @@ class App {
                     <span>VA grown</span>
                     <span>California - Expensive homes</span>
                 </p>
+                <p>keep scrollin' to peep<br/>some of the other places I've been to!</p>
             </div>
             <div class="card card-jersey">
                 <div class="image" style="background-image: url('/images/joyz.jpg')"></div>
@@ -81,6 +105,7 @@ class App {
                 sidenav.el.classList.add('is-visible')
             } else {
                 sidenav.el.classList.remove('is-visible')
+                this.upButton.classList.remove('is-visible')
             }
         })
     }
@@ -122,7 +147,24 @@ class App {
         pachinkoSection.render()
         this.sectionCount++
         this.pachinkoSection = pachinkoSection
-    
+
+        // @todo: re-add instructions; height constraint and content loading causes a strange scroll jack issue
+        /* let instructions = new DOMParser().parseFromString(
+            `
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <p>Drop ball: Click.</p>
+                    <p>Apply force: Click around!</p>
+                    <p>Reset: Space Key</p>
+                    <p>Win: Hit all 4 walls</p>
+                    <p>There's 12 rounds, so get goin!</p>
+                </div>
+            `,
+            'text/html'
+        )
+        instructions = instructions.body.firstChild
+        this.pachinkoSection.addContent(instructions) */
+
         // note: canvas being injected creates a 'lag' issue
         // probably because it takes time to paint/render
         // temporarily adding logic to wait until the section is visible to inject it
@@ -130,6 +172,8 @@ class App {
 
         const initializePachinko = () => {
             if (pachinkoSection.intersected) {
+                this.upButton.classList.add('is-visible')
+
                 if (!pachinkoGame) {
                     // @todo: use computed styles
                     // 1st 40 is for translated value
@@ -137,26 +181,18 @@ class App {
                     // edward 40 hands
                     const sizes = {
                         width: (pachinkoSection.content.getBoundingClientRect().width - 40 - 40) * 0.8,
-                        height: (pachinkoSection.content.getBoundingClientRect().height) * 0.8
+                        height: (pachinkoSection.content.getBoundingClientRect().height) * 0.4
                     }
     
                     let game = new PachinkoGame(sizes)
                     pachinkoGame = document.querySelector('.pachinko-stall')
-    
-                    const upButton = document.createElement('button')
-                    upButton.classList.add('up')
-                    upButton.textContent = 'up'
-    
-                    upButton.addEventListener('click', () => {
-                        const cheese = document.querySelector('.cheese')
-                        cheese.classList.add('is-visible')
-                        window.scrollTo({
-                            top: 0,
-                            left: 0,
-                            behavior: 'smooth'
-                        })
+
+                    window.addEventListener('scroll', () => {
+                        const fullyVisibleSections = document.querySelectorAll('.section.is-full-view')
+                        if (fullyVisibleSections && fullyVisibleSections.length) {
+                            this.upButton.classList.add('is-visible')
+                        }
                     })
-                    pachinkoSection.addContent(upButton)
                 } else {
                     window.removeEventListener('scroll', initializePachinko)
                 }
@@ -171,6 +207,7 @@ class App {
         this.addMenu()
         this.addWeatherReport()
         this.addSideNav()
+        this.addUpButton()
         this.addIntroSection()
         this.addCountrySections()
         this.setupPachinko()

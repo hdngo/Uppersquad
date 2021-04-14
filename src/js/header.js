@@ -19,9 +19,21 @@ class Header {
     }
 
     createLogo = () => {
-        const logoEl = document.createElement('div')
-        logoEl.classList.add('header__logo')
-        logoEl.textContent = 'ME'
+        let logoEl = new DOMParser().parseFromString(
+            `
+                <div class="header__logo">ME</div>
+            `,
+            'text/html'
+        )
+        logoEl = logoEl.body.firstChild
+
+        logoEl.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            })
+        })
 
         return logoEl
     }

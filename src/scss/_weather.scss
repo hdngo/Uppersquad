@@ -1,0 +1,118 @@
+
+.weather-report {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @include breakpoint('m') {
+        display: block;
+    }
+}
+
+.weather__controls {
+    text-align: center;
+    margin-bottom: 20px;
+    @include breakpoint('m') {
+        text-align: right;
+    }
+}
+
+.weather__control {
+    font-family: 'boogalooregular', 'sans-serif', 'serif';
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: white;
+    border: 2px solid darken(lavenderblush, 15%);
+    outline: none;
+    transition: 0.4s all ease-in-out;
+    
+    @include breakpoint('m') {
+        font-size: 2rem;
+    }
+
+    &:hover {
+        cursor: pointer;
+        color: teal;
+        border-color: teal;
+    }
+}
+.weather__title {
+    font-size: 2.1rem;
+    @include breakpoint('m') {
+        font-size: 2.9rem;
+    }
+
+    @include breakpoint('m') {
+        font-size: 3.2rem;
+    }
+}
+
+.weather__temp-current {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    @include breakpoint('m') {
+        font-size: 2.6rem;
+    }
+
+    @include breakpoint('l') {
+        font-size: 2.9rem;
+    }
+}
+
+.weather__temp-hi, .weather__temp-lo {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.weather__overview, .weather__conditions {
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    animation: 0.6s showWeatherReport ease-in forwards;
+    // transition: 0.3s all ease-out;
+}
+
+.weather__overview.disappearing, .weather__conditions.disappearing {
+    opacity: 1;
+    visibility: visible;
+    animation: 0.3s hideWeatherReport ease-out forwards;
+}
+
+.weather__description {
+    margin-bottom: 10px;
+    * {
+        font-size: 1.8rem;
+    }
+}
+
+.weather__factor {
+    font-size: 1.3rem;
+}
+
+@keyframes showWeatherReport {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes hideWeatherReport {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden
+    }
+}

@@ -17,7 +17,6 @@ class WeatherReport {
         // should generate report right off the bat with user or default location
         // @todo: on page change, use location of country and update report
         // this.el = this.getCurrentWeather(this.userLocation)
-        this.forecastType = 'current'
     }
 
     // @todo: time permitting, use hourly data to generate graph
@@ -42,121 +41,54 @@ class WeatherReport {
         this.localWeatherButton = document.querySelector('.weather__control-local')
         this.localWeatherButton.addEventListener('click', this.getLocalWeather)
         this.el = reportEl
-        this.localWeatherButton = this.el.querySelector('.weather__control-local')
-        this.localWeatherButton.addEventListener('click', () => {
-            console.log('fetching')
-        })
     }
 
     generateReport = (weatherData) => {
         // @todo: use for forecast
         // const { current , hourly, daily } = { ...weatherData }
+        let iconEl = this.getIcon(weatherData.weather[0].icon)
+        let reportContent = new DOMParser().parseFromString(
+            `
+                <div class="weather__overview">
+                    <h2 class="weather__title">${weatherData.name}</h2>
+                    <div class="weather__temp-current">Current Temp: ${weatherData.main.temp}&deg;</div>
+                    <p class="weather__temp-extremes">
+                        <span class="weather__temp-hi">${Math.round(weatherData.main.temp_max)}&deg; <span class="label">High</span></span>
+                        <span class="weather__temp-lo">${Math.round(weatherData.main.temp_min)}&deg; <span class="label">Low</span></span>
+                    </p>
+                </div>
+                <div class="weather__conditions">
+                    <div class="weather__description">
+                        <p class="weather__description-main">Current Condition: ${weatherData.weather[0].main}</p>
+                        <p class="weather__description-sub">"${weatherData.weather[0].description}" to be precise</p>
+                    </div>
+                    <div class="weather__factors">
+                        <div class="weather__factor weather__factor-humidity">${Math.round(weatherData.main.humidity)}% humidity</div>
+                        <div class="weather__factor weather__factor-wind">${weatherData.wind.speed}mph winds</div>
+                    </div>
+                </div>
+            `,
+            'text/html'
+        )
+        const reportOverview = reportContent.body.firstChild
+        const reportConditions = reportOverview.nextElementSibling
 
-        // create overview wrapper
-        // layout
-        const overviewEl = document.createElement('div')
-        overviewEl.classList.add('weather__overview')
-        
-        const headlineEl = this.createHeadlineEl(weatherData.name)
-        overviewEl.appendChild(headlineEl)
-
-        // create icon
-        // note: need to practice more w/ async await
-        const iconEl = this.getIcon(weatherData.weather[0].icon)
-        overviewEl.appendChild(iconEl)
-
-        const currentTempEl = this.createCurrentTempEl(weatherData.main.temp)
-        overviewEl.appendChild(currentTempEl)
-
-        const extremitiesEl = this.createExtremitiesEl(weatherData.main.temp_max, weatherData.main.temp_min)
-        overviewEl.appendChild(extremitiesEl)
-        this.el.appendChild(overviewEl)
-
-        const conditionsEl = this.createConditionsEl(weatherData)
-        
-        const factorsEl = this.createFactorsEl(weatherData.main.humidity, weatherData.wind.speed)
-        conditionsEl.appendChild(factorsEl)
-        
-        this.el.appendChild(conditionsEl)
+        this.el.appendChild(reportOverview)
+        this.el.appendChild(reportConditions)
+        const overviewEl = document.querySelector('.weather__overview')
+        const refEl = document.querySelector('.weather__temp-current')
+        overviewEl.insertBefore(iconEl, refEl)
     }
 
+    // @todo: implement forecast
     generateWeeklyForecast = (location) => {
         console.log(location)
     }
 
-    createHeadlineEl = (headline) => {
-        const headlineEl = document.createElement('h2')
-        headlineEl.classList.add('weather__title')
-        headlineEl.textContent = `${headline}`
-
-        return headlineEl
-    }
-
-    createCurrentTempEl = (temp) => {
-        const tempEl = document.createElement('div')
-        tempEl.classList.add('weather__temp-current')
-        tempEl.innerHTML = `${temp}&deg;`
-
-        return tempEl
-    }
-
-    createExtremitiesEl = (max, min) => {
-        const extremitiesEl = document.createElement('p')
-        extremitiesEl.classList.add('weather__temp-extremes')
-
-        const hiEl = document.createElement('span')
-        hiEl.classList.add('weather__temp-hi')
-        hiEl.innerHTML = `${Math.round(max)}&deg <span class="label">High</span>`
-        extremitiesEl.appendChild(hiEl)
-
-        const loEl = document.createElement('span')
-        loEl.classList.add('weather__temp-lo')
-        loEl.innerHTML = `${Math.round(min)}&deg <span class="label">Low</span>`
-        extremitiesEl.appendChild(loEl)
-
-        return extremitiesEl
-    }
-
-    createConditionsEl = (weatherData) => {
-        const conditionsEl = document.createElement('div')
-        conditionsEl.classList.add('weather__conditions')
-
-        const descriptionEl = this.createDescriptionEl(weatherData.weather[0])
-        conditionsEl.appendChild(descriptionEl)
-
-        return conditionsEl
-    }
-
-    createDescriptionEl = (weather) => {
-        const descriptionEl = document.createElement('p')
-        descriptionEl.classList.add('weather__description')
-        descriptionEl.innerHTML = `
-            <p class="weather__description-main>${weather.main}</p>
-            <p class="weather__description-sub>${weather.description}</p>
-        `
-
-        return descriptionEl
-    }
-
-    createFactorsEl = (humidity, windSpeed) => {
-        const factorsEl = document.createElement('div')
-        factorsEl.classList.add('weather__factors')
-
-        const humidityEl = document.createElement('div')
-        humidityEl.classList.add('weather__factor', 'weather__factor-humidity')
-        humidityEl.innerHTML = `Humidity: ${Math.round(humidity)}%`
-        factorsEl.appendChild(humidityEl)
-        
-        const windEl = document.createElement('div')
-        windEl.classList.add('weather__factor', 'weather__factor-wind')
-        windEl.innerHTML = `Winds: ${windSpeed} mph`
-        factorsEl.appendChild(windEl)
-
-        return factorsEl
-    }
-
     getIcon = (iconCode) => {
-        let iconEl = document.createElement('img')
+        // let iconElWrapper
+        let iconEl
+         = document.createElement('img')
         iconEl.classList.add('weather-icon')
 
         // @todo: solve cors issue for lodaing image
@@ -168,7 +100,7 @@ class WeatherReport {
             const imageURL = URL.createObjectURL(iconBlob)
             iconEl.src = imageURL
         })
-
+        
         return iconEl
     }
 
@@ -241,8 +173,6 @@ class WeatherReport {
 
             let weatherData = await response.json();
             this.hideLoader()
-                // generate report
-                // return this.generateReport(weatherData)
                 this.generateWeeklyForecast()
         } catch(e) {
             console.log(e)

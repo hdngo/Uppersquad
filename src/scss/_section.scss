@@ -1,0 +1,524 @@
+
+.section {
+    height: 500px;
+    width: 100%;
+    padding: 30px 15px 30px 30px;
+    transition: background-color 1.5s ease-in-out;
+    position: relative;
+    // note: overflow visible only works when it's set on both x and y, otw sets to auto
+
+    @include breakpoint('m') {
+        padding: 30px 100px;
+    }
+
+    * {
+        position: relative;
+        // note: need position relative b/c z-index issues
+        z-index: 1;
+    }
+}
+
+.section.is-visible {
+    // background-color: $slate;
+
+    .section__title {
+        opacity: 1;
+        transform: translateX(30px);
+        transform-origin: center;
+
+        &:hover {
+            transform: translateX(30px) scale(1.5);
+            cursor: pointer;
+        }
+    }
+
+    .blurb {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(30px);
+        transform-origin: center;
+    }
+
+    &.section-reverse .section__title {
+        transform: translateX(-30px);
+
+        &:hover {
+            transform: translateX(-30px) scale(1.5);
+            cursor: pointer;
+        }
+    }
+
+    &.section-reverse .blurb {
+        transform: translateX(-30px);
+    }
+}
+
+.section__title {
+    display: block;
+    font-size: 2.3rem;
+    opacity: 0;
+    z-index: 2;
+    transform: translateX(-5px);
+    transition: 0.6s opacity ease-in-out 0.15s, 0.4s transform linear 0.35s, 0.35s scale cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.45s;
+
+    @include breakpoint('m') {
+        font-size: 3.6rem;
+    }
+
+    @include breakpoint('l') {
+        font-size: 4.75rem;
+    }
+
+   /*  &::hover {
+        transform: scale(1.1);
+    } */
+}
+
+.section__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &::before, &::after {
+        display: block;
+        position: absolute;
+        content: '';
+        height: 7%;
+        min-width: 0;
+        width: auto;
+        background-color: teal;
+        opacity: 0.225;
+        transition: min-width 0.7s linear 0.2s;
+    }
+
+    &::before {
+        top: 7%;
+        left: 0;
+    }
+
+    &::after {
+        top: 20%;
+        left: 0;
+    }
+}
+
+.section-intro {
+    height: auto;
+    width: 100%;
+    
+    .section__content {
+        margin: 50px 0;
+
+        @include breakpoint('m') {
+            margin: 75px 0;
+        }
+    }
+}
+
+.section-costa-rica .section__background {
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-15deg);
+        transform-style: preserve-3d;
+    }
+}
+
+.section-costa-rica.is-visible .section__background {
+    $colors: red, blue;
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-15deg);
+    }
+    
+    &::before {
+        background-color: red;
+    }
+
+    &::after {
+        background-color: blue;
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-switzerland .section__background {
+    &::before, &::after {
+        transform: scale(1.1) rotateZ(5deg);
+    }
+}
+.section-switzerland.is-visible .section__background {
+    $colors: red, $slate;
+    &::before, &::after {
+        transform: scale(1.1) rotateZ(5deg);
+    }
+
+    &::before {
+        background-color: white;
+        border-top: 10px inset red;
+        border-bottom: 10px inset red;
+    }
+
+    &::after {
+        background-color: white;
+        border-top: 10px inset red;
+        border-bottom: 10px inset red;
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-canada .section__background {
+    &::before, &::after {
+        transform: scaleX(-1.3) rotateZ(10deg);
+    }
+}
+
+.section-canada.is-visible .section__background {
+    $colors: red, $slate;
+    &::before, &::after {
+        transform: scaleX(-1.3) rotateZ(10deg);
+    }
+    
+    &::before {
+        background-color: red;
+    }
+
+    &::after {
+        background-color: red;
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-vietnam.is-visible .section__background {
+    $colors: red, yellow;
+
+    &::before {
+        background-color: yellow;
+    }
+
+    &::after {
+        background-color: red
+    }
+
+    .balloon {
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                $index: random(list.length($colors));
+                color: darken(list.nth($colors, $index), 5%);
+                mix-blend-mode: hue;
+            }
+        }
+    }
+}
+
+.section-new-zealand .section__background {
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-6deg);
+    }
+
+}
+
+.section-new-zealand.is-visible .section__background {
+    $colors: blue, red;
+    &::before, &::after {
+        transform: scale(1.2) rotateZ(-6deg);
+    }
+    
+    &::before {
+        background-color: blue
+    }
+
+    &::after {
+        background-color: red;
+    }
+
+    @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+            $index: random(list.length($colors));
+            color: darken(list.nth($colors, $index), 7.5%);
+            mix-blend-mode: hue;
+        }
+    }
+}
+
+.section.is-visible {
+    .section__background {
+        &::before, &::after {
+            min-width: 100%;
+            max-width: 100%;
+        }
+
+        .balloon {
+            text-shadow: 2px 2px 2px black;
+        }
+    }
+}
+
+@mixin balloonFloat($degree) {
+    @keyframes float-#{$degree}-degrees {
+        0% {
+            transform: translateY(0px) rotate($degree + deg);
+        }
+    
+        25% {
+            transform: translateY(-2px) rotate($degree + deg);
+        }
+    
+        50% {
+            transform: translateY(0px) rotate($degree + deg);
+        }
+    
+        75%  {
+            transform: translateY(2px) rotate($degree + deg);
+        }
+    
+        100% {
+            transform: translateY(0) rotate($degree + deg);
+        }
+    }
+}
+
+.balloon {
+    color: darken($slate, 10%);
+    position: absolute;
+    opacity: 0.1;
+    letter-spacing: 0.2rem;
+    font-size: 2.5rem;
+    z-index: 1;
+    transition: 0.5s color ease-in-out;
+
+    @include breakpoint('l') {
+        font-size: 4.75rem;
+    }
+
+    @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+            $randomDeg: math.floor(math.random() * 270);
+            // was too hard to read words upside down lols
+            @include balloonFloat($randomDeg);
+            $animation-name: float-#{$randomDeg}-degrees;
+            animation: float-#{$randomDeg}-degrees 2s linear infinite;
+            // note: choppy animation was caused by having an ease timing functinon
+        }
+    }
+
+    &:hover {
+        cursor: auto;
+    }
+}
+
+.section-reverse {
+    padding: 30px 30px 30px 15px;
+
+    @include breakpoint('m') {
+        padding: 30px 100px;
+    }
+    .section__content {
+        align-items: flex-end;
+    }
+
+    .section__background {
+        left: auto;
+        right: 0;
+        &::before {
+            left: auto;
+            right: 0;
+        }
+    
+        &::after {
+            left: auto;
+            right: 0;
+        }
+    }
+}
+
+.section__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+
+
+.section.is-in-view {
+    .container {
+        opacity: 1;
+    }
+}
+
+.section.is-in-view {
+    .card {
+        transform: translate(0, -10px)
+    }
+}
+
+.section-reverse .container {
+    flex-direction: row-reverse;
+    text-align: right;
+
+    .card {
+        margin-left: 0;
+        margin-right: auto;
+
+        @include breakpoint('m') {
+            margin: 0 auto;
+        }
+        
+        &:after {
+            left: auto;
+            right: -15%;
+            top: -8%;
+            height: 115%;
+            border-color: #cc5500;
+        }
+
+        .image {
+            background-color: teal;
+            border: 10px solid teal;
+            
+            @include breakpoint('m') {
+                box-shadow: 9px 12px 12px rgba(#cc5500, 35%);
+                background-color: transparent;
+                border: none;
+            }
+        }
+    }
+}
+
+.card {
+    display: inline-flex;
+    width: 80%;
+    margin-right: 0;
+    margin-left: auto;
+    padding: 10px;
+    position: relative;
+    transform: translate(0, 20px);
+    transition: 0.7s transform ease-in-out;
+
+    @include breakpoint('m') {
+        width: 40%;
+        margin: 0 auto;
+    }
+
+    &:after {
+        content: '';
+        height: 100%;
+        width: 100%;
+        background-color: transparent;
+        border: 10px solid teal;
+        position: absolute;
+        top: 10%;
+        left: -15%;
+        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1); 
+    }
+
+    .image {
+        height: 200px;
+        width: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 10% 29%;
+        background-color: orange;
+        border: 10px solid orange;
+        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1);    
+        
+        @include breakpoint('m') {
+            height: 350px;
+            box-shadow: -11px 13px 19px rgba(rgb(75, 77, 77), 35%);
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            background-position: 20% 40%;
+            background-size: cover;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+        .image {
+            transform: scale(1.125) rotate(-5deg)
+        }
+    }
+
+    &:hover:after {
+        transform: rotate(15deg)
+    }
+}
+
+
+.blurb {
+    // font-family: 'robotothin', 'sans-serif', 'serif';
+    display: inline-flex;
+    flex-direction: column;
+    width: 50%;
+    height: auto;
+    padding: 30px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.6s opacity ease-in-out 0.15s, 0.4s transform linear 0.35s, 0.6s visibility ease-in-out 0.15s;
+    transform: translate(-5px, -30px);
+    z-index: 2;
+
+    @include breakpoint('m') {
+        height: 100%;
+        width: 60%;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+
+        @include breakpoint('m') {
+            font-size: 2.1rem;
+        }
+
+        @include breakpoint('l') {
+            font-size: 2.9rem;
+        }
+    }
+
+    p {
+        font-size: 1.2rem;
+
+        @include breakpoint('m') {
+            font-size: 1.6rem;
+        }
+    }
+    span {
+        display: block;
+        margin-bottom: 15px;
+    }
+}
+
+.section-reverse .blurb {
+    transform: translate(5px, -30px);
+}

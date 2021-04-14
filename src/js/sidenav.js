@@ -21,9 +21,6 @@ class SideNav {
                 this.scrollToSection(e)
             })
         })
-
-        const main = document.querySelector('main')
-        
     }
 
     createSideNav = () => {
@@ -68,19 +65,19 @@ class SideNav {
         const targetSection = document.querySelector(`.section-${targetClass}`)
         const targetId = e.target.getAttribute('data-country-index')
         const item = this.items[targetId]
+        
         if (this.flyEvent) {
             this.flyEvent = null
         }
-        // if (!this.flyEvent) {
-            const flyEvent = new CustomEvent(
-                'fly', { 
-                    detail: { country: item }
-                }
-            )
-            this.flyEvent = flyEvent
+        
+        const flyEvent = new CustomEvent(
+            'fly', { 
+                detail: { country: item }
+            }
+        )
+        this.flyEvent = flyEvent
 
-            window.dispatchEvent(flyEvent)
-        // }
+        window.dispatchEvent(flyEvent)
         
         window.scrollTo({
             top: targetSection.offsetTop,
@@ -90,9 +87,6 @@ class SideNav {
         // this.weatherReport.getCurrentWeather(item)
 
         const main = document.querySelector('main')
-        // add an appropriate event listener
-        // const event = new Event("cat")
-        // create and dispatch the event
 
         if (this.activeItem) {
             this.activeItem.classList.remove('is-active')

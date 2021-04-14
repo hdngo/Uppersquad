@@ -1,0 +1,91 @@
+.sidenav {
+    position: fixed;
+    opacity: 0;
+    visibility: hidden;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 60px;
+    z-index: 10;
+    transition: 0.4s all ease-in-out;
+
+    @include breakpoint('m') {
+        width: 100px;
+    }
+}
+
+.sidenav.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidenav__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-top: 20vh;
+    padding-bottom: 20vh;
+}
+
+.sidenav__item {
+    display: block;
+    text-align: center;
+    position: relative;
+    font-size: 0;
+
+    &:before {
+        content: '';
+        display: block;
+        height: 20px;
+        width: 20px;
+        background-color: white;
+        border: 2px solid rgba(lighten(black, 20%), 0.4);
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+        left: calc(50% - 12px);
+        right: auto;
+        bottom: auto;
+        transition: 0.6s all ease-in-out;
+    }
+    &:hover {
+        .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(20px, 0);
+        }
+    }
+    &:hover:before {
+        background-color: magenta;
+    }
+
+    &.is-active {
+        &:before {
+            background-color: cyan;
+            border-color: black;
+        }
+
+        .tooltip {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+}
+
+
+// absolute position styling causing wrapped text
+.tooltip {
+    font-size: 1rem;
+    color: black;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    right: auto;
+    bottom: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s all ease-in-out;
+}

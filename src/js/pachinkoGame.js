@@ -171,7 +171,7 @@ class PachinkoGame {
 
         const sizes = {
             width: (parentElement.getBoundingClientRect().width - borderWidth - 40) * 0.8,
-            height: (parentElement.getBoundingClientRect().height) * 0.8
+            height: (parentElement.getBoundingClientRect().height) * 0.4
         }
 
         this.setCanvasDimensions(sizes)
@@ -196,7 +196,7 @@ class PachinkoGame {
         if (revealedString) {
             this.ctx.font = "24px luckiest_guyregular"
             this.ctx.fillStyle = "magenta"
-            this.ctx.fillText(revealedString, this.canvas.width / 4 + 20, this.canvas.height / 2 + 20)
+            this.ctx.fillText(revealedString, 15, this.canvas.height / 2 + 20)
         }
 
         if (this.score === this.easterEgg.length) {
@@ -217,14 +217,6 @@ class PachinkoGame {
         this.ctx.fillStyle = "#000000"
         this.ctx.fillText(`Vx: ${this.ball.velocity.x.toFixed(2)} Vy: ${this.ball.velocity.y.toFixed(2)}`, 5, 30)
         // note: check stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary for performance and optimization
-    }
-
-    drawInstructions = () => {
-        this.ctx.font = "22px robotothin"
-        this.ctx.fillstyle = "teal"
-        this.ctx.fillText("Click to begin.", this.canvas.width * 0.1, this.canvas.height /2 - 12)
-        this.ctx.font = "16px robotothin"
-        this.ctx.fillText("Press the Space key to restart.", this.canvas.width * 0.1, this.canvas.height / 2 + 30)
     }
 
     drawBall = () => {
@@ -263,7 +255,6 @@ class PachinkoGame {
         this.drawBall()
         this.drawVelocityStats()
         this.drawScore()
-        this.drawInstructions()
 
         // physics application
         if (this.isActive) {
