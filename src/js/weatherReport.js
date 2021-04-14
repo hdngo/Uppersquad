@@ -188,10 +188,12 @@ class WeatherReport {
 
     showLoader = () => {
         this.loader.classList.add('loading')
+        document.documentElement.style.pointerEvents = 'none'
     }
 
     hideLoader = () => {
         this.loader.classList.remove('loading')
+        document.documentElement.style.pointerEvents = 'auto'
     }
 
     clearReport = () => {
