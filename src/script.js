@@ -46,30 +46,27 @@ class App {
     
         const container = document.createElement('div')
         container.classList.add('container')
-    
-        const blurb = document.createElement('div')
-        blurb.classList.add('blurb')
-        blurb.innerHTML = `<h3>The name's Harvey</h3><p><span>Jersey raised</span><span>VA grown</span><span>California - Expensive homes</span></p>`
-        container.appendChild(blurb)
-    
-        const jerseyDiv = document.createElement('div')
-        jerseyDiv.classList.add('card', 'card-jersey')
-        const jerseyImg = document.createElement('div')
-        jerseyImg.classList.add('image')
-        jerseyImg.style.backgroundImage = `url("/images/joyz.jpg")`
-        jerseyDiv.appendChild(jerseyImg)
-        
-        container.appendChild(jerseyDiv)
-    
+        container.innerHTML = `
+            <div class="blurb">
+                <h3>The name's Harvey</h3>
+                <p>
+                    <span>Jersey raised</span>
+                    <span>VA grown</span>
+                    <span>California - Expensive homes</span>
+                </p>
+            </div>
+            <div class="card card-jersey">
+                <div class="image" style="background-image: url('/images/joyz.jpg')"></div>
+            </div>
+        `
         introSection.addContent(container)
-        
         introSection.render()
         this.sectionCount++
         this.intro = introSection
     }
 
     addSideNav = () => {
-        const sidenav = new SideNav(this.countryData)
+        const sidenav = new SideNav(this.countryData, this.weatherReport)
         this.sideNav = sidenav
         this.main.appendChild(this.sideNav.el)
 
@@ -77,6 +74,15 @@ class App {
         const refEl = this.main
 
         parentEl.insertBefore(this.sideNav.el, refEl)
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero')
+            const main = document.querySelector('main')
+            if (main.scrollTop > hero.getBoundingClientRect().bottom) {
+                sidenav.el.classList.add('is-visible')
+            } else {
+                sidenav.el.classList.remove('is-visible')
+            }
+        })
     }
 
     addCountrySections = () => {
@@ -163,8 +169,8 @@ class App {
         this.addHeader()
         this.addHero()
         this.addMenu()
-        this.addSideNav()
         this.addWeatherReport()
+        this.addSideNav()
         this.addIntroSection()
         this.addCountrySections()
         this.setupPachinko()

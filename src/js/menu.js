@@ -36,9 +36,6 @@ class Menu {
 
     bindListeners = () => {
         this.trigger.addEventListener('click', this.toggleOpened)
-        /* this.weatherCTA.addEventListener('click', () => {
-            console.log('get the weather')
-        }) */
     }
 
     toggleOpened = () => {

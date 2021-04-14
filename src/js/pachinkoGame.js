@@ -122,15 +122,15 @@ class PachinkoGame {
              // use relative x and find distance from ball, to apply a force equal to dif
             let force = { x: 0, y: 0 }
             if (relativeX !== this.ball.position.x) {
-                force.x = relativeX < this.ball.position.x ? this.ball.position.x - relativeX : relativeX - this.ball.position.x
+                force.x = relativeX < this.ball.position.x ? this.ball.position.x - relativeX : -1 *(relativeX - this.ball.position.x)
             }
 
             if (relativeY !== this.ball.position.y) {
-                force.y = relativeY < this.ball.position.y ?  this.ball.position.y - relativeY : relativeY - this.ball.position.y
+                force.y = relativeY < this.ball.position.y ?  this.ball.position.y - relativeY : -1 *(relativeY - this.ball.position.y)
             }
 
-            this.ball.velocity.x += force.x
-            this.ball.velocity.y += force.y
+            this.ball.velocity.x += force.x / 10
+            this.ball.velocity.y += force.y / 10
         }
     }
 

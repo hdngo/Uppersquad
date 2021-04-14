@@ -86,7 +86,7 @@ class Section {
         let options = {
             root: null,
             rootMargin: "0px",
-            threshold: [0.01]
+            threshold: [0.01, 0.6, 1]
         }
     
         let target = targetEl
@@ -98,11 +98,17 @@ class Section {
                     this.intersected = true                   
                 }
                 
-                /* if (entry.intersectionRatio === 1) {
+                if (entry.intersectionRatio >= 0.6) {
+                    target.classList.add('is-in-view')
+                } else {
+                    target.classList.remove('is-in-view')
+                }
+
+                if (entry.intersectionRatio === 1) {
                     target.classList.add('is-full-view')
                 } else {
                     target.classList.remove('is-full-view')
-                } */
+                }
     
                 if (!entry.isIntersecting) {
                     target.classList.remove('is-visible')

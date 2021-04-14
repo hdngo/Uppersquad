@@ -95,8 +95,8 @@ p {
 
 @include breakpoint('l') {
     :root {
-        --hero-subtitle-tY: -50px;
-        --hero-title-up-TY: 110px;
+        --hero-subtitle-tY: -40px;
+        --hero-title-up-tY: 100px;
     }
 }
 
@@ -177,11 +177,19 @@ p {
 
 .menu__wrapper {
     width: 100%;
+    height: 100%;
 }
 
 .menu__content {
     position: relative;
     width: 100%;
+    height: 100%;
+}
+
+.weather-report {
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
 .weather__controls {
@@ -200,6 +208,45 @@ p {
         cursor: pointer;
     }
 }
+
+.weather__overview, .weather__conditions {
+    opacity: 0;
+    visibility: hidden;
+    animation: 0.6s showWeatherReport ease-in forwards;
+    // transition: 0.3s all ease-out;
+}
+
+.weather__overview.disappearing, .weather__conditions.disappearing {
+    opacity: 1;
+    visibility: visible;
+    animation: 0.3s hideWeatherReport ease-out forwards;
+}
+
+@keyframes showWeatherReport {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes hideWeatherReport {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden
+    }
+}
+
+
 
 .webgl
 {
@@ -764,14 +811,20 @@ span[class^="hero__title-"] {
     display: flex;
     align-items: center;
     opacity: 0.4;
-    transition: 0.4s opacity cubic-bezier(0.6, 0.04, 0.98, 0.335);
+    transition: 0.8s opacity cubic-bezier(0.6, 0.04, 0.98, 0.335);
 }
 
-// .section.is-full-view {
-//     .container {
-//         opacity: 1;
-//     }
-// }
+.section.is-in-view {
+    .container {
+        opacity: 1;
+    }
+}
+
+.section.is-in-view {
+    .card {
+        transform: translate(0, -10px)
+    }
+}
 
 .section-reverse .container {
     flex-direction: row-reverse;
@@ -810,7 +863,8 @@ span[class^="hero__title-"] {
     width: 30%;
     padding: 10px;
     position: relative;
-    transform: translate(0, 30px);
+    transform: translate(0, 20px);
+    transition: 0.7s transform ease-in-out;
 
     @include breakpoint('m') {
         width: 40%;
@@ -825,6 +879,7 @@ span[class^="hero__title-"] {
         position: absolute;
         top: 10%;
         left: -15%;
+        transition: 0.8s transform cubic-bezier(0.215, 0.610, 0.355, 1); 
     }
 
     .image {
@@ -850,17 +905,23 @@ span[class^="hero__title-"] {
     &:hover {
         cursor: pointer;
         .image {
-            transform: scale(1.125)
+            transform: scale(1.125) rotate(-5deg)
         }
+    }
+
+    &:hover:after {
+        transform: rotate(15deg)
     }
 }
 
 
 .blurb {
+    font-family: 'robotothin', 'sans-serif', 'serif';
     display: inline-flex;
     flex-direction: column;
     width: 70%;
-    font-family: 'robotothin', 'sans-serif', 'serif';
+    height: 100%;
+    padding: 30px 0;
     transform: translate(0, -30px);
     z-index: 2;
 
@@ -902,25 +963,58 @@ span[class^="hero__title-"] {
 }
 
 .sidenav {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     position: fixed;
+    opacity: 0;
+    visibility: hidden;
     left: 0;
     top: 0;
     height: 100vh;
     width: 30px;
-    padding-top: 10vh;
-    padding-bottom: 10vh;
-    z-index: 1;
+    z-index: 10;
+    transition: 0.4s all ease-in-out;
 
     @include breakpoint('m') {
         width: 100px;
     }
 }
 
-.sidenav__item {
+.sidenav.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
 
+.sidenav__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding-top: 20vh;
+    padding-bottom: 20vh;
+}
+
+.sidenav__item {
+    display: block;
+    text-align: center;
+    position: relative;
+    font-size: 0;
+
+    &:before {
+        content: '';
+        display: block;
+        height: 20px;
+        width: 20px;
+        background-color: white;
+        border: 2px solid rgba(lighten(black, 20%), 0.4);
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+        left: calc(50% - 12px);
+        right: auto;
+        bottom: auto;
+        transition: 0.6s all ease-in-out;
+    }
     &:hover {
         .tooltip {
             opacity: 1;
@@ -928,10 +1022,82 @@ span[class^="hero__title-"] {
             transform: translate(20px, 0);
         }
     }
+    &:hover:before {
+        background-color: magenta;
+    }
+
+    &.is-active {
+        &:before {
+            background-color: cyan;
+            border-color: black;
+        }
+    }
 }
 
+// absolute position styling causing wrapped text
 .tooltip {
+    font-size: 1rem;
+    color: black;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    right: auto;
+    bottom: auto;
     opacity: 0;
     visibility: hidden;
     transition: 0.5s all ease-in-out;
+}
+
+.loader {
+    height: 34px;
+    width: 34px;
+    background-color: black;
+    border: 2px solid white;
+    position: absolute;
+    top: calc(50% - 18px);
+    left: calc(50% - 18px);
+    right: auto;
+    bottom: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s all ease-in;
+
+
+    &:before, &:after {
+        content: '';
+        display: block;
+        height: 24px;
+        width: 24px;
+        background-color: white;
+        border: 2px solid black;
+        position: absolute;
+        top: calc(50% - 13px);
+        bottom: auto;
+    }
+
+    &:before {
+        right: calc(100% + 15px);
+        left: auto;
+    }
+
+    &:after {
+        left: calc(100% + 15px);
+        right: auto;
+    }
+}
+
+.loader.loading {
+    animation: spin 1s linear infinite forwards;
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

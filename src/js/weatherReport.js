@@ -5,11 +5,6 @@ class WeatherReport {
             long: -122.42
         }
 
-        /* this.defaults = {
-            lat: 37.39,
-            long: -121.87
-        } */
-
         this.geoEnabled = navigator.geolocation
         this.baseUrl = 'https://api.openweathermap.org/data/2.5/'
         this.getCurrentWeather = this.getCurrentWeather.bind(this)
@@ -17,18 +12,22 @@ class WeatherReport {
         this.getGeo = this.getGeo.bind(this)
         this.getGeo()
         this.generateReport = this.generateReport.bind(this)
-        // this.el = this.getGeo()
+        this.showLoader = this.showLoader.bind(this)
+        this.getLocalWeather = this.getLocalWeather.bind(this)
         // should generate report right off the bat with user or default location
         // @todo: on page change, use location of country and update report
         // this.el = this.getCurrentWeather(this.userLocation)
         this.forecastType = 'current'
-        // this.bindListeners()
     }
 
     // @todo: time permitting, use hourly data to generate graph
     generateLayout = () => {
         const reportEl = document.createElement('div')
         reportEl.classList.add('weather-report')
+        const loaderEl = document.createElement('div')
+        loaderEl.classList.add('loader')
+        reportEl.appendChild(loaderEl)
+        this.loader = loaderEl
         const forecastControls = document.createElement('div')
         forecastControls.classList.add('weather__controls')
         forecastControls.innerHTML = 
@@ -40,8 +39,8 @@ class WeatherReport {
         const menuContent = document.querySelector('.menu__content')
         menuContent.appendChild(reportEl)
 
-        // const locationButton = document.querySelector('.weather__control-local')
-        // locationButton.addEventListener('click', this.getCurrentWeather(this.userLocation))
+        this.localWeatherButton = document.querySelector('.weather__control-local')
+        this.localWeatherButton.addEventListener('click', this.getLocalWeather)
         this.el = reportEl
         this.localWeatherButton = this.el.querySelector('.weather__control-local')
         this.localWeatherButton.addEventListener('click', () => {
@@ -50,21 +49,6 @@ class WeatherReport {
     }
 
     generateReport = (weatherData) => {
-        // type can either be 'user' or 'location', 'user' use `this.userLocation`; `location` use `location` param
-       /*  const reportEl = document.createElement('div')
-        reportEl.classList.add('weather-report')
-
-        const forecastControls = document.createElement('div')
-        forecastControls.classList.add('weather__controls')
-        forecastControls.innerHTML = 
-            `
-                <button class="weather__control weather__control-local">Use My Location</button>
-            `
-        reportEl.appendChild(forecastControls) */
-
-        // console.log(`data received`)
-        // console.log(weatherData)
-
         // @todo: use for forecast
         // const { current , hourly, daily } = { ...weatherData }
 
@@ -94,16 +78,6 @@ class WeatherReport {
         conditionsEl.appendChild(factorsEl)
         
         this.el.appendChild(conditionsEl)
-
-        /* const menuContent = document.querySelector('.menu__content')
-        menuContent.appendChild(reportEl) */
-
-        // const locationButton = document.querySelector('.weather__control-local')
-        // locationButton.addEventListener('click', this.getCurrentWeather(this.userLocation))
-        
-       /*  this.el = reportEl
-        this.localWeatherButton = this.el.querySelector('.weather__control-local')
-        console.log('times') */
     }
 
     generateWeeklyForecast = (location) => {
@@ -209,7 +183,7 @@ class WeatherReport {
             }
 
             this.userLocation = latLong
-            
+
             // current weather
             this.getCurrentWeather(latLong)
 
@@ -239,14 +213,13 @@ class WeatherReport {
                 // current weather
                 `${this.baseUrl}weather?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=${process.env.MYAPPID}`
             )
-            console.log('loading')
-
+            this.showLoader()
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             let weatherData = await response.json();
-
+            this.hideLoader()
             // generate report
             return this.generateReport(weatherData)
         } catch(e) {
@@ -261,17 +234,46 @@ class WeatherReport {
                 `${this.baseUrl}onecall?lat=${location.lat}&lon=${location.long}&units=imperial&APPID=${process.env.MYAPPID}`
             )
             console.log('forecasting')
+            this.showLoader()
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             let weatherData = await response.json();
+            this.hideLoader()
                 // generate report
                 // return this.generateReport(weatherData)
                 this.generateWeeklyForecast()
         } catch(e) {
             console.log(e)
         }
+    }
+    
+    getLocalWeather = () => {
+        this.clearReport()
+        setTimeout(() => {
+            this.getGeo()
+        }, 1800)
+    }
+
+    showLoader = () => {
+        this.loader.classList.add('loading')
+    }
+
+    hideLoader = () => {
+        this.loader.classList.remove('loading')
+    }
+
+    clearReport = () => {
+        const overview = document.querySelector('.weather__overview')
+        const conditions = document.querySelector('.weather__conditions')
+        this.showLoader()
+        overview.classList.add('disappearing')
+        conditions.classList.add('disappearing')
+        setTimeout(() => {
+            this.el.removeChild(overview)
+            this.el.removeChild(conditions)
+        }, 1300)
     }
 }
 
